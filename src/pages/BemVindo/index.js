@@ -8,7 +8,7 @@ export default function BemVindo() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
+        <Animatable.Image animation="pulse" iterationCount="infinite"
           source={require("../../../assets/coracao.png")}
           style={styles.imgCoracao}
         />
@@ -18,16 +18,16 @@ export default function BemVindo() {
       <View style={styles.footer}>
         <Text style={styles.txt2}>Bem vindo ao seu histórico médico particular</Text>
 
-        <Pressable>
-          <Animatable.Text animation="rubberBand" style={styles.btnEntrar}>
+        <Pressable style={styles.btn}>
+          <Text style={styles.txtBtn}>
             Entrar
-          </Animatable.Text>
+          </Text>
         </Pressable>
 
-        <Pressable>
-          <Animatable.Text animation="rubberBand" style={styles.btnCadastrar}>
+        <Pressable style={styles.btn}>
+          <Text style={styles.txtBtn}>
             Cadastrar
-          </Animatable.Text>
+          </Text>
         </Pressable>
       </View>
     </View>

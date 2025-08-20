@@ -1,10 +1,14 @@
 import { Text, View, Image, Pressable } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import { TextInput } from "react-native-web";
 
 export default function Login() {
   const navigation = useNavigation();
+
+  const [cpf, setCpf] = useState("");
+  const [senha, setSenha] = useState("");
 
   return (
     <View style={styles.container}>
@@ -32,26 +36,45 @@ export default function Login() {
       </View>
 
       <View style={styles.main}>
-        <Pressable style={styles.btnVoltar}>
+        <Pressable style={styles.btnVoltar} onPress={() => navigation.navigate("BemVindo")}>
           <Text style={styles.txtBtnVoltar}>Voltar</Text>
         </Pressable>
 
         <Image
           source={require("../../../assets/azul-logo.png")}
-          style={styles.icons}
+          style={styles.logo}
         />
 
-        <Text style={styles.txt2}>
-          Bem vindo ao seu histórico médico particular
+        <Text style={styles.txt1}>
+          Informe seu CPF e senha para entrar:
         </Text>
 
-        <Pressable style={styles.btn}>
-          <Text style={styles.txtBtn}>Entrar</Text>
-        </Pressable>
+        <View style={styles.containerInputs}>
+          <TextInput
+            style={styles.input}
+            placeholder="CPF"
+            value={cpf}
+            onChangeText={(text) => setCpf(text)}
+          />
 
-        <Pressable style={styles.btnEsqueci}>
-          <Text style={styles.txtBtnEsqueci}>Esqueci a senha</Text>
-        </Pressable>
+          <TextInput
+            style={styles.input}
+            placeholder="Senha"
+            secureTextEntry={true}
+            value={senha}
+            onChangeText={(text) => setSenha(text)}
+          />
+        </View>
+
+        <View style={styles.containerBtn}>
+          <Pressable style={styles.btn}>
+            <Text style={styles.txtBtn}>Entrar</Text>
+          </Pressable>
+
+          <Pressable style={styles.btnEsqueci}>
+            <Text style={styles.txtBtnEsqueci}>Esqueci a senha</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

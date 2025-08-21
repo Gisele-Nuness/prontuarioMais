@@ -6,13 +6,14 @@ import BemVindo from "./src/pages/BemVindo";
 import Login from './src/pages/Login';
 import Cadastro from './src/pages/Cadastro';
 import Cadastro2 from './src/pages/Cadastro2';
+import Splash2 from "./src/pages/Splash2";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash"
+        initialRouteName="Splash2"
         screenOptions={{
           headerShown: false,
         }}
@@ -21,7 +22,8 @@ export default function App() {
         <Stack.Screen name="BemVindo" component={BemVindo} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
-        <Stack.Screen name="Cadastro2" component={Cadastro2} />     
+        <Stack.Screen name="Cadastro2" component={Cadastro2} />
+        <Stack.Screen name="Splash2" component={Splash2} />     
       </Stack.Navigator>
     </NavigationContainer>
   );

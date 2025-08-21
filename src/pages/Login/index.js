@@ -27,7 +27,7 @@ export default function Login() {
 
         setModalMessage("Login realizado com sucesso!");
         setModal(true);
-        navigation.navigate("Home");
+        navigation.navigate("Splash2");
       } else {
         setModalMessage("Credenciais inválidas");
         setModal(true);

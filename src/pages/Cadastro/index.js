@@ -1,4 +1,4 @@
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Image, Pressable, Button } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -141,7 +141,7 @@ export default function Login() {
             style={styles.input}
             placeholder="Sua data de nascimento"
             value={dataNasc}
-            onChangeText={(text) => setDataNasc(text)}
+            onChangeText={(text) => setDataNasc(maskDateBR(text))}
           />
         </View>
 

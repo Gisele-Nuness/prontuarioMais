@@ -75,13 +75,12 @@ export default StyleSheet.create({
     height: 230,
   },
 
-    txt1: {
+  txt1: {
     color: "#abaaaaff",
     fontSize: 18,
     fontWeight: "bold",
     padding: 20,
   },
-
 
   containerInputs: {
     width: "100%",
@@ -91,7 +90,6 @@ export default StyleSheet.create({
     gap: 50,
   },
 
-
   input: {
     width: 300,
     height: 40,
@@ -99,9 +97,9 @@ export default StyleSheet.create({
     borderColor: "#abaaaaff",
     color: "#abaaaaff",
     fontSize: 16,
-   },
+  },
 
-   containerBtn: {
+  containerBtn: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -144,5 +142,24 @@ export default StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#1600a4ff",
+  },
+
+  modal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: "center",
   },
 });

@@ -1,14 +1,42 @@
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Image, Pressable, Button } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { TextInput } from "react-native-web";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Modal } from "react-native";
 
 export default function Login() {
   const navigation = useNavigation();
 
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
+  const [modal, setModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const recuperarDados = async () => {
+    try {
+      const usuarioSalvo = await AsyncStorage.getItem("dadosUsuario");
+      const dados = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+
+      if (dados && dados.cpf === cpf && dados.senha === senha) {
+        await AsyncStorage.setItem(
+          "recuperarDados",
+          JSON.stringify({ email, senha })
+        );
+
+        setModalMessage("Login realizado com sucesso!");
+        setModal(true);
+        navigation.navigate("Home");
+      } else {
+        setModalMessage("Credenciais inválidas");
+        setModal(true);
+      }
+    } catch (e) {
+      setModalMessage("Erro ao realizar login");
+      setModal(true);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -36,7 +64,10 @@ export default function Login() {
       </View>
 
       <View style={styles.main}>
-        <Pressable style={styles.btnVoltar} onPress={() => navigation.navigate("BemVindo")}>
+        <Pressable
+          style={styles.btnVoltar}
+          onPress={() => navigation.navigate("BemVindo")}
+        >
           <Text style={styles.txtBtnVoltar}>Voltar</Text>
         </Pressable>
 
@@ -45,9 +76,7 @@ export default function Login() {
           style={styles.logo}
         />
 
-        <Text style={styles.txt1}>
-          Informe seu CPF e senha para entrar:
-        </Text>
+        <Text style={styles.txt1}>Informe seu CPF e senha para entrar:</Text>
 
         <View style={styles.containerInputs}>
           <TextInput
@@ -67,7 +96,7 @@ export default function Login() {
         </View>
 
         <View style={styles.containerBtn}>
-          <Pressable style={styles.btn}>
+          <Pressable style={styles.btn} onPress={recuperarDados}>
             <Text style={styles.txtBtn}>Entrar</Text>
           </Pressable>
 
@@ -76,6 +105,24 @@ export default function Login() {
           </Pressable>
         </View>
       </View>
+
+      <Modal
+        visible={modal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModal(false)}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <Button
+              title="Fechar"
+              color="#1600a4ff"
+              onPress={() => setModal(false)}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

@@ -55,9 +55,9 @@ export default function Login() {
     try {
       await AsyncStorage.setItem("dadosUsuario", JSON.stringify(dadosUsuario));
       setLoading(false);
-      setModalMessage("Cadastro realizado com sucesso!!!");
+      setModalMessage("Cadastro realizado com sucesso! VocÊ será redirecionado(a) para a tela de Login");
       setModal(true);
-      navigation.navigate("Home");
+      navigation.navigate("Login");
     } catch (e) {
       setModalMessage("Erro ao salvar os dados no AsyncStorage");
       setModal(true);

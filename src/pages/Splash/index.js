@@ -8,14 +8,14 @@ import React, { useEffect } from "react";
 export default function Splash() {
   const navigation = useNavigation();
 
-/*useEffect(() => {
+useEffect(() => {
   const timer = setTimeout(() => {
-    navigation.navigate("Login");
+    navigation.navigate("BemVindo");
   }, 4000);
 
   return () => clearTimeout(timer);
 }, [navigation]);
-*/
+
 
   return (
     <View style={styles.container}>

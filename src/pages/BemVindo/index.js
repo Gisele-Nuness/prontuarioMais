@@ -33,7 +33,10 @@ export default function BemVindo() {
           <Text style={styles.txtBtn}>Entrar</Text>
         </Pressable>
 
-        <Pressable style={styles.btn}>
+        <Pressable
+          style={styles.btn}
+          onPress={() => navigation.navigate("Cadastro")}
+        >
           <Text style={styles.txtBtn}>Cadastrar</Text>
         </Pressable>
       </View>

@@ -13,6 +13,9 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [email, setEmail] = useState("");
   const [dataNasc, setDataNasc] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const maskDateBR = (value) => {
     const v = value.replace(/\D/g, "").slice(0, 8);
@@ -143,7 +146,7 @@ export default function Login() {
         </View>
 
         <View style={styles.containerBtn}>
-          <Pressable style={styles.btn}>
+          <Pressable style={styles.btn} onPress={salvarDados}>
             <Text style={styles.txtBtn}>Próximo</Text>
           </Pressable>
         </View>

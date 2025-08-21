@@ -53,7 +53,7 @@ export default StyleSheet.create({
 
     btn: {
       width: 300,
-      height: 40,
+      height: 50,
       backgroundColor: '#1600a4ff',
       borderRadius: 20,
       padding: 10,

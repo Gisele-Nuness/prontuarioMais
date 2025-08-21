@@ -71,15 +71,21 @@ export default StyleSheet.create({
   },
 
   logo: {
-    width: 230,
-    height: 230,
+    width: 220,
+    height: 220,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 50
   },
 
     txt1: {
-    color: "#abaaaaff",
+    width: '100%',
+    color: "#7b7b7bff",
     fontSize: 18,
     fontWeight: "bold",
-    padding: 20,
+    alignItems: 'flex-start',
+    left: 45,
+    top: 50
   },
 
 
@@ -88,7 +94,8 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    gap: 50,
+    gap: 45,
+    marginTop: 50
   },
 
 
@@ -106,8 +113,8 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 20,
-    marginTop: 60,
-    marginBottom: 100,
+    marginTop: 30,
+    marginBottom: 60,
   },
 
   btn: {
@@ -128,21 +135,5 @@ export default StyleSheet.create({
     textTransform: "uppercase",
   },
 
-  btnEsqueci: {
-    width: 300,
-    height: 50,
-    borderRadius: 20,
-    borderColor: "#1600a4ff",
-    borderWidth: 2,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
 
-  txtBtnEsqueci: {
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#1600a4ff",
-  },
 });

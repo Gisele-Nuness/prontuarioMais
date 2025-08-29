@@ -8,13 +8,14 @@ import Cadastro from './src/pages/Cadastro';
 import Cadastro2 from './src/pages/Cadastro2';
 import Splash2 from "./src/pages/Splash2";
 import Home from "./src/pages/Home";
+import Exames from "./src/pages/Exames";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash"
+        initialRouteName="Exames"
         screenOptions={{
           headerShown: false,
         }}
@@ -25,7 +26,8 @@ export default function App() {
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Cadastro2" component={Cadastro2} />
         <Stack.Screen name="Splash2" component={Splash2} />
-        <Stack.Screen name="Home" component={Home} />     
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Exames" component={Exames} />     
       </Stack.Navigator>
     </NavigationContainer>
   );

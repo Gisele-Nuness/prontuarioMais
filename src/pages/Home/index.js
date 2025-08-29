@@ -72,7 +72,7 @@ export default function Home() {
               </View>
             </Pressable>
 
-            <Pressable style={[styles.historico, styles.exames]}>
+            <Pressable style={[styles.historico, styles.exames]} onPress={() => navigation.navigate("Exames")}>
               <View style={styles.textos}>
                 <Text style={styles.legendText}>Visualizar</Text>
                 <Text style={styles.titleText}>EXAMES</Text>

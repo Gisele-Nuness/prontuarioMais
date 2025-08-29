@@ -22,7 +22,7 @@ export default function Login() {
       if (dados && dados.cpf === cpf && dados.senha === senha) {
         await AsyncStorage.setItem(
           "recuperarDados",
-          JSON.stringify({ email, senha })
+          JSON.stringify({ cpf, senha })
         );
 
         setModalMessage("Login realizado com sucesso!");

@@ -10,13 +10,14 @@ import Splash2 from "./src/pages/Splash2";
 import Home from "./src/pages/Home";
 import Exames from "./src/pages/Exames";
 import Historico from "./src/pages/Historico";
+import Perfil from "./src/pages/Perfil";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Perfil"
         screenOptions={{
           headerShown: false,
         }}
@@ -29,7 +30,8 @@ export default function App() {
         <Stack.Screen name="Splash2" component={Splash2} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Exames" component={Exames} />
-        <Stack.Screen name="Historico" component={Historico} />     
+        <Stack.Screen name="Historico" component={Historico} />
+        <Stack.Screen name="Perfil" component={Perfil} />     
       </Stack.Navigator>
     </NavigationContainer>
   );

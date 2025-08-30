@@ -149,7 +149,7 @@ export default function Home() {
           />
           <Text style={styles.footerText}>Cartão SUS</Text>
         </Pressable>
-        <Pressable style={styles.footerItem}>
+        <Pressable style={styles.footerItem} onPress={() => navigation.navigate("Perfil")}>
           <Image
             source={require("../../../assets/icon-perfil.png")}
             style={styles.footerIcon}

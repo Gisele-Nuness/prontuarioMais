@@ -9,47 +9,46 @@ import {
 } from "react-native";
 import styles from "./style";
 
-// lista fixa de exames (mock)
-const itensExames = [
+const itensHistorico = [
   {
     id: "1",
-    title: "Hemograma",
+    title: "Consulta Ginecologia",
     dateISO: "2025-04-09T11:30:00-03:00",
     weekday: "Sexta-feira",
   },
   {
     id: "2",
-    title: "Alergeno (geral)",
+    title: "Consulta Cardiologia",
     dateISO: "2025-04-02T10:30:00-03:00",
     weekday: "Sexta-feira",
   },
   {
     id: "3",
-    title: "Beta HCG",
+    title: "Consulta Ginecologia",
     dateISO: "2025-03-31T09:30:00-03:00",
     weekday: "Sábado",
   },
   {
     id: "4",
-    title: "Urina - Tipo 1",
+    title: "Usg mamas",
     dateISO: "2025-02-24T11:30:00-03:00",
     weekday: "Segunda-feira",
   },
   {
     id: "5",
-    title: "Vitamina B12",
+    title: "Eletrocardiograma",
     dateISO: "2025-01-29T11:30:00-03:00",
     weekday: "Sexta-feira",
   },
   {
     id: "6",
-    title: "Colesterol total",
+    title: "Consulta Clínico Geral",
     dateISO: "2024-11-05T09:00:00-03:00",
     weekday: "Terça-feira",
   },
   {
     id: "7",
-    title: "Vitamina B1",
+    title: "Consulta Cardiologia",
     dateISO: "2024-09-03T12:30:00-03:00",
     weekday: "Terça-feira",
   },
@@ -68,7 +67,7 @@ function formatarHora(dateISO) {
   return `${horas}:${minutos}`;
 }
 
-const CartaoExame = ({ exame, onPress }) => (
+const CartaoHistorico = ({ exame, onPress }) => (
   <Pressable style={styles.historico} onPress={onPress}>
     <View style={styles.textos}>
       <Text style={styles.titleLegend}>{exame.title}</Text>
@@ -80,16 +79,16 @@ const CartaoExame = ({ exame, onPress }) => (
   </Pressable>
 );
 
-export default function Exames() {
+export default function Historico() {
   const [textoPesquisa, setTextoPesquisa] = useState("");
 
-  const examesFiltrados = useMemo(() => {
+  const historicosFiltrados = useMemo(() => {
     const termoNormalizado = textoPesquisa.trim().toLowerCase();
 
-    if (!termoNormalizado) return itensExames;
+    if (!termoNormalizado) return itensHistorico;
 
-    return itensExames.filter((exame) =>
-      exame.title.toLowerCase().includes(termoNormalizado)
+    return itensHistorico.filter((historico) =>
+      historico.title.toLowerCase().includes(termoNormalizado)
     );
   }, [textoPesquisa]);
 
@@ -123,7 +122,7 @@ export default function Exames() {
           />
           <TextInput
             style={styles.buscar}
-            placeholder="Buscar exames"
+            placeholder="Buscar"
             placeholderTextColor="#2A2A2A99"
             value={textoPesquisa}
             onChangeText={setTextoPesquisa}
@@ -143,14 +142,14 @@ export default function Exames() {
 
         <View style={styles.cards}>
           <View style={{ marginBottom: 10 }}>
-            <Text style={styles.titleText}>EXAMES</Text>
+            <Text style={styles.titleText}>HISTÓRICO</Text>
           </View>
 
           <FlatList
-            data={examesFiltrados}
-            keyExtractor={(exame) => exame.id}
+            data={historicosFiltrados}
+            keyExtractor={(historico) => historico.id}
             renderItem={({ item }) => (
-              <CartaoExame
+              <CartaoHistorico
                 exame={item}
                 onPress={() => {
                   /* navegação */

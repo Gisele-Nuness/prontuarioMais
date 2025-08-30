@@ -59,7 +59,7 @@ export default function Home() {
 
         <View style={styles.cards}>
           <View style={styles.cardsRow}>
-            <Pressable style={styles.historico}>
+            <Pressable style={styles.historico} onPress={() => navigation.navigate("Historico")}>
               <View style={styles.textos}>
                 <Text style={styles.legendText}>Visualizar</Text>
                 <Text style={styles.titleText}>HISTÓRICO</Text>

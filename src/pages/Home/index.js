@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Text, View, Image, Pressable, TextInput } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
+import CartaoSUS from "../CartaoSUS";
 
 export default function Home() {
   const navigation = useNavigation();
+
+  const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
   const bannerImages = [
     require("../../../assets/banner1.png"),
@@ -22,7 +25,6 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.header}>
         <View style={styles.containerPerfil}>
           <Image
@@ -44,7 +46,6 @@ export default function Home() {
       </View>
 
       <View style={styles.main}>
-        
         <View style={styles.searchWrapper}>
           <Image
             source={require("../../../assets/pesquisar.png")}
@@ -59,7 +60,10 @@ export default function Home() {
 
         <View style={styles.cards}>
           <View style={styles.cardsRow}>
-            <Pressable style={styles.historico} onPress={() => navigation.navigate("Historico")}>
+            <Pressable
+              style={styles.historico}
+              onPress={() => navigation.navigate("Historico")}
+            >
               <View style={styles.textos}>
                 <Text style={styles.legendText}>Visualizar</Text>
                 <Text style={styles.titleText}>HISTÓRICO</Text>
@@ -72,7 +76,10 @@ export default function Home() {
               </View>
             </Pressable>
 
-            <Pressable style={[styles.historico, styles.exames]} onPress={() => navigation.navigate("Exames")}>
+            <Pressable
+              style={[styles.historico, styles.exames]}
+              onPress={() => navigation.navigate("Exames")}
+            >
               <View style={styles.textos}>
                 <Text style={styles.legendText}>Visualizar</Text>
                 <Text style={styles.titleText}>EXAMES</Text>
@@ -132,7 +139,10 @@ export default function Home() {
           />
           <Text style={styles.footerText}>Início</Text>
         </Pressable>
-        <Pressable style={styles.footerItem}>
+        <Pressable
+          style={styles.footerItem}
+          onPress={() => setModalSUSVisivel(true)}
+        >
           <Image
             source={require("../../../assets/coracao-home.png")}
             style={styles.footerIcon}
@@ -147,6 +157,14 @@ export default function Home() {
           <Text style={styles.footerText}>Perfil</Text>
         </Pressable>
       </View>
+
+      <CartaoSUS
+        visivel={modalSUSVisivel}
+        aoFechar={() => setModalSUSVisivel(false)}
+        
+        frenteSrc={require("../../../assets/cartao-frente.png")}
+        versoSrc={require("../../../assets/cartao-verso.jpg")}
+      />
     </View>
   );
 }

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../Header";
 
 export default function Exames() {
   const [textoPesquisa, setTextoPesquisa] = useState("");
@@ -96,25 +97,7 @@ export default function Exames() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.containerPerfil}>
-          <Image
-            source={require("../../../assets/usuario-de-perfil.png")}
-            style={styles.iconPerfil}
-          />
-        </View>
-
-        <View style={styles.containerIcons}>
-          <Image
-            source={require("../../../assets/notificacao.png")}
-            style={styles.icons}
-          />
-          <Image
-            source={require("../../../assets/ponto-de-interrogacao.png")}
-            style={styles.icons}
-          />
-        </View>
-      </View>
+      <Header />
 
       <View style={styles.main}>
         <View style={styles.searchWrapper}>

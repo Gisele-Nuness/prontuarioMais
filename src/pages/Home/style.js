@@ -12,41 +12,6 @@ export default StyleSheet.create({
     flexDirection: "column",
     overflow: "hidden",
   },
-
-  header: {
-    height: 80,
-    width: "100%",
-    backgroundColor: PRIMARY,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-  },
-
-  containerPerfil: {
-    width: 100,
-    alignItems: "center",
-  },
-
-  containerIcons: {
-    width: 100,
-    flexDirection: "row",
-    gap: 20,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    right: 25,
-  },
-
-  iconPerfil: {
-    width: 52,
-    height: 52,
-  },
-
-  icons: {
-    width: 20,
-    height: 20,
-  },
-
   
   main: {
     flex: 1,
@@ -56,7 +21,7 @@ export default StyleSheet.create({
     alignItems: "center",
   },
 
-  
+
   searchWrapper: {
     width: "100%",
     height: 50,

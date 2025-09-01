@@ -11,9 +11,12 @@ import styles from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Header";
+import Footer from "../Footer";
+import CartaoSUS from "../CartaoSUS";
 
 export default function Perfil() {
   const navigation = useNavigation();
+  const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
   const itensPerfil = [
     {
@@ -72,32 +75,14 @@ export default function Perfil() {
         </View>
       </View>
 
-      <View style={styles.footer}>
-        <Pressable
-          style={styles.footerItem}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Image
-            source={require("../../../assets/home.png")}
-            style={styles.footerIcon}
-          />
-          <Text style={styles.footerText}>Início</Text>
-        </Pressable>
-        <Pressable style={styles.footerItem}>
-          <Image
-            source={require("../../../assets/coracao-home.png")}
-            style={styles.footerIcon}
-          />
-          <Text style={styles.footerText}>Cartão SUS</Text>
-        </Pressable>
-        <Pressable style={styles.footerItem}>
-          <Image
-            source={require("../../../assets/icon-perfil.png")}
-            style={styles.footerIcon}
-          />
-          <Text style={styles.footerText}>Perfil</Text>
-        </Pressable>
-      </View>
+      <Footer setModalSUSVisivel={setModalSUSVisivel} />
+
+      <CartaoSUS
+        visivel={modalSUSVisivel}
+        aoFechar={() => setModalSUSVisivel(false)}
+        frenteSrc={require("../../../assets/cartao-frente.png")}
+        versoSrc={require("../../../assets/cartao-verso.jpg")}
+      />
     </View>
   );
 }

@@ -2,7 +2,7 @@ import { Text, View, Image, Pressable, Button } from "react-native";
 import styles from "./style";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
-import { TextInput } from "react-native-web";
+import { TextInput } from "react-native";
 import axios from "axios";
 import { Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,7 +55,7 @@ export default function Login() {
     try {
       await AsyncStorage.setItem("dadosUsuario", JSON.stringify(dadosUsuario));
       setLoading(false);
-      setModalMessage("Cadastro realizado com sucesso! VocÊ será redirecionado(a) para a tela de Login");
+      setModalMessage("Cadastro realizado com sucesso! Faça Login");
       setModal(true);
       navigation.navigate("Login");
     } catch (e) {
@@ -111,6 +111,7 @@ export default function Login() {
             value={cep}
             onChangeText={setCep}
             onBlur={buscarEndereco}
+            keyboardType="numeric"
           />
           <TextInput
             style={styles.input}
@@ -124,6 +125,7 @@ export default function Login() {
             placeholder="Número"
             value={numero}
             onChangeText={(text) => setNumero(text)}
+            keyboardType="numeric"
           />
 
           <TextInput

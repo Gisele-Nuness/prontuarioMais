@@ -1,8 +1,8 @@
-import { Text, View, Image, Pressable, Button } from "react-native";
+import { Text, View, Image, Pressable, Button, ScrollView } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { TextInput } from "react-native-web";
+import { TextInput } from "react-native";
 import { Modal } from "react-native";
 
 export default function Login() {
@@ -69,7 +69,10 @@ export default function Login() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ alignItems: "center", justifyContent: "flex-start" }}
+    >
       <View style={styles.header}>
         <View style={styles.containerHora}>
           <Text style={styles.hora}>14:44</Text>
@@ -120,6 +123,7 @@ export default function Login() {
             placeholder="CPF"
             value={cpf}
             onChangeText={(text) => setCpf(text)}
+            keyboardType="numeric"
           />
 
           <TextInput
@@ -142,6 +146,7 @@ export default function Login() {
             placeholder="Sua data de nascimento"
             value={dataNasc}
             onChangeText={(text) => setDataNasc(maskDateBR(text))}
+            keyboardType="numeric"
           />
         </View>
 
@@ -169,6 +174,6 @@ export default function Login() {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 }

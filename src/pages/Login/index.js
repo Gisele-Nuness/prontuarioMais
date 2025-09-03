@@ -2,7 +2,7 @@ import { Text, View, Image, Pressable, Button } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { TextInput } from "react-native-web";
+import { TextInput } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Modal } from "react-native";
 
@@ -84,6 +84,7 @@ export default function Login() {
             placeholder="CPF"
             value={cpf}
             onChangeText={(text) => setCpf(text)}
+            keyboardType="numeric"
           />
 
           <TextInput

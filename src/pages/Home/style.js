@@ -99,11 +99,11 @@ export default StyleSheet.create({
 
   banner: {
     width: "100%",
-    height: 160,
+    height: 200,
     borderRadius: 18,
     overflow: "hidden",
     marginTop: 12,
-    marginBottom: 50,
+    marginBottom: 60,
     backgroundColor: PRIMARY,
   },
 

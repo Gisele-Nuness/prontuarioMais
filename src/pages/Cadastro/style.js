@@ -3,9 +3,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1600a4ff",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    backgroundColor: "#fff",
     flexDirection: "column",
     overflow: "hidden",
   },
@@ -18,6 +16,7 @@ export default StyleSheet.create({
     padding: 5,
     alignItems: "center",
     textAlign: "center",
+    backgroundColor: "#1600a4ff",
   },
 
   containerHora: {
@@ -49,7 +48,7 @@ export default StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   btnVoltar: {
@@ -59,7 +58,7 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 30,
+    top: 10,
     left: 10,
   },
 
@@ -112,7 +111,8 @@ export default StyleSheet.create({
     justifyContent: "center",
     gap: 20,
     marginTop: 30,
-    marginBottom: 60,
+    marginBottom: 60
+   
   },
 
   btn: {

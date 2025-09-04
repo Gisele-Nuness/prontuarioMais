@@ -27,8 +27,9 @@
   },
 
   iconPerfil: {
-    width: 52,
-    height: 52,
+    width: 62,
+    height: 62,
+    borderRadius: 100,
   },
 
   icons: {

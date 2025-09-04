@@ -66,6 +66,9 @@ export default function Perfil() {
                   if (item.title === "Sair") {
                     sair();
                   }
+                  if (item.title === "Perfil") {
+                    navigation.navigate("EditarPerfil");
+                  }
                 }}
               />
             )}

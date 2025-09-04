@@ -69,10 +69,7 @@ export default function Login() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ alignItems: "center", justifyContent: "flex-start" }}
-    >
+    <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.containerHora}>
           <Text style={styles.hora}>14:44</Text>
@@ -174,6 +171,6 @@ export default function Login() {
           </View>
         </View>
       </Modal>
-    </ScrollView>
+    </View>
   );
 }

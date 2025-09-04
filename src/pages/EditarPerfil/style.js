@@ -11,36 +11,38 @@ export default StyleSheet.create({
   },
 
   header: {
-    height: 30,
+    height: 120,
     width: "100%",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    justifyContent: "center",
+    flexDirection: "column",
     padding: 5,
     alignItems: "center",
     textAlign: "center",
     backgroundColor: "#1600a4ff",
   },
 
-  containerHora: {
+  imagem: {
     width: 100,
-    alignItems: "center",
+    height: 100,
+    borderRadius: 100,
   },
 
-  containerIcons: {
-    width: 100,
-    flexDirection: "row",
-    gap: 10,
-    alignItems: "center",
+  imgPerfil: {
+    width: 92,
+    height: 92,
   },
 
-  hora: {
-    color: "#fff",
-    fontWeight: "bold",
+  imgGaleria: {
+    width: 25,
+    height: 25,
   },
 
-  icons: {
-    width: 20,
-    height: 20,
+  imgLapis: {
+    width: 15,
+    height: 15,
+    position: "absolute",
+    right: 10,
+    bottom: 10,
   },
 
   main: {
@@ -50,7 +52,7 @@ export default StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   btnVoltar: {
@@ -79,23 +81,22 @@ export default StyleSheet.create({
     top: 50,
   },
 
-  txt1: {
-    width: "100%",
-    color: "#7b7b7bff",
-    fontSize: 18,
-    fontWeight: "bold",
-    alignItems: "flex-start",
-    left: 45,
-    top: 50,
-  },
-
   containerInputs: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
     gap: 45,
-    marginTop: 50,
+    marginTop: 100,
+  },
+
+  label: {
+    alignSelf: "flex-start",
+    marginLeft: 2,
+    marginBottom: -25,
+    color: "#7b7b7bff",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 
   input: {
@@ -113,13 +114,12 @@ export default StyleSheet.create({
     justifyContent: "center",
     gap: 20,
     marginTop: 30,
-    marginBottom: 60
-   
+    marginBottom: 60,
   },
 
   btn: {
-    width: 300,
-    height: 50,
+    width: 200,
+    height: 40,
     backgroundColor: "#1600a4ff",
     borderRadius: 20,
     padding: 10,

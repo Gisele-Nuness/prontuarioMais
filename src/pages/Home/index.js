@@ -42,6 +42,14 @@ export default function Home() {
           />
         </View>
 
+        <View style={styles.banner}>
+          <Image
+            source={bannerImages[bannerIndex]}
+            style={styles.bannerImage}
+            resizeMode="cover"
+          />
+        </View>
+
         <View style={styles.cards}>
           <View style={styles.cardsRow}>
             <Pressable
@@ -78,14 +86,6 @@ export default function Home() {
           </View>
         </View>
 
-        <View style={styles.banner}>
-          <Image
-            source={bannerImages[bannerIndex]}
-            style={styles.bannerImage}
-            resizeMode="cover"
-          />
-        </View>
-
         <View style={styles.cardsBottom}>
           <Pressable style={styles.cardSmall}>
             <View style={styles.textos}>
@@ -120,7 +120,6 @@ export default function Home() {
       <CartaoSUS
         visivel={modalSUSVisivel}
         aoFechar={() => setModalSUSVisivel(false)}
-        
         frenteSrc={require("../../../assets/cartao-frente.png")}
         versoSrc={require("../../../assets/cartao-verso.jpg")}
       />

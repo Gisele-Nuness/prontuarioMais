@@ -30,7 +30,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
-    marginBottom: 70,
+    marginBottom: 50,
     marginTop: 10,
   },
 
@@ -49,7 +49,7 @@ export default StyleSheet.create({
 
   cards: {
     width: "100%",
-    marginBottom: 50,
+    marginBottom: 40,
   },
 
   cardsRow: {
@@ -101,8 +101,8 @@ export default StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 18,
+    borderColor: "#fff",
     overflow: "hidden",
-    marginTop: 12,
     marginBottom: 60,
     backgroundColor: PRIMARY,
   },

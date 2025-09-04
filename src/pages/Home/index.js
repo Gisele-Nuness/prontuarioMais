@@ -13,8 +13,8 @@ export default function Home() {
 
   const bannerImages = [
     require("../../../assets/banner1.png"),
-    require("../../../assets/banner2.png"),
-    require("../../../assets/banner3.png"),
+    require("../../../assets/campanha-dengue.jpg"),
+    require("../../../assets/campanha-setembro-amarelo.png"),
   ];
   const [bannerIndex, setBannerIndex] = useState(0);
 

@@ -9,11 +9,11 @@ export default function Login() {
   const navigation = useNavigation();
 
   const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
+  const [cns, setCns] = useState("");
   const [senha, setSenha] = useState("");
   const [email, setEmail] = useState("");
   const [dataNasc, setDataNasc] = useState("");
-  const [loading, setLoading] = useState(false);
+  
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
@@ -50,7 +50,7 @@ export default function Login() {
   };
 
   const salvarDados = async () => {
-    if (!nome || !cpf || !senha || !email || !dataNasc) {
+    if (!nome || !cns || !senha || !email || !dataNasc) {
       setModalMessage("Por favor, preencha todos os campos.");
       setModal(true);
       return;
@@ -64,7 +64,7 @@ export default function Login() {
       return;
     }
 
-    const dadosIniciais = { nome, cpf, senha, email, dataNasc };
+    const dadosIniciais = { nome, cns, senha, email, dataNasc };
     navigation.navigate("Cadastro2", { dadosIniciais });
   };
 
@@ -117,9 +117,9 @@ export default function Login() {
           />
           <TextInput
             style={styles.input}
-            placeholder="CPF"
-            value={cpf}
-            onChangeText={(text) => setCpf(text)}
+            placeholder="CNS"
+            value={cns}
+            onChangeText={(text) => setCns(text)}
             keyboardType="numeric"
           />
 

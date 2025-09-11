@@ -17,7 +17,7 @@ modalOverlay: {
     borderRadius: 20,
     paddingHorizontal: 18,
     paddingTop: 16,
-    paddingBottom: 14,
+    paddingBottom: 54,
   },
 
   modalHeaderRow: {
@@ -32,6 +32,7 @@ modalOverlay: {
     fontWeight: "800",
     letterSpacing: 0.4,
     fontSize: 12,
+    padding: 20
   },
 
   modalImageWrap: {

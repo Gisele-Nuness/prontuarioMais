@@ -51,8 +51,6 @@ export default StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   btnVoltar: {
@@ -73,6 +71,14 @@ export default StyleSheet.create({
     fontWeight: "bold",
   },
 
+  titulo: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 60,
+    color: "#1600a4ff",
+    textAlign: "center",
+  },
+
   logo: {
     width: 220,
     height: 220,
@@ -86,8 +92,8 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    gap: 45,
-    marginTop: 100,
+    gap: 30,
+    marginTop: 30,
   },
 
   label: {

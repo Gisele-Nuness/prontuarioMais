@@ -7,19 +7,22 @@ import { Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import Footer from "../Footer";
+import CartaoSUS from "../CartaoSUS";
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
 
   const [nome, setNome] = useState("");
+  const [cns, setCns] = useState("");
   const [cpf, setCpf] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [senha, setSenha] = useState("");
   const [email, setEmail] = useState("");
   const [dataNasc, setDataNasc] = useState("");
-  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [imagem, setImagem] = useState(null);
+  const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
   const route = useRoute();
   const dadosUsuario = route.params?.dadosUsuario ?? {};
@@ -32,6 +35,8 @@ export default function EditarPerfil() {
           const usuario = JSON.parse(dados);
           setNome(usuario.nome || "");
           setCpf(usuario.cpf || "");
+          setCns(usuario.cns || "");
+          setTelefone(usuario.telefone || "");
           setSenha(usuario.senha || "");
           setEmail(usuario.email || "");
           setDataNasc(usuario.dataNasc || "");
@@ -39,10 +44,12 @@ export default function EditarPerfil() {
         } else {
           setNome(dadosUsuario.nome || "");
           setCpf(dadosUsuario.cpf || "");
+          setCns(dadosUsuario.cns || "");
+          setTelefone(dadosUsuario.telefone || "");
           setSenha(dadosUsuario.senha || "");
           setEmail(dadosUsuario.email || "");
           setDataNasc(dadosUsuario.dataNasc || "");
-          setImagem(dadosUsuario.imagem || null); 
+          setImagem(dadosUsuario.imagem || null);
         }
       } catch (e) {}
     };
@@ -135,7 +142,16 @@ export default function EditarPerfil() {
       setModal(true);
       return;
     }
-    const dadosIniciais = { nome, cpf, senha, email, dataNasc, imagem };
+    const dadosIniciais = {
+      nome,
+      cns,
+      cpf,
+      telefone,
+      senha,
+      email,
+      dataNasc,
+      imagem,
+    };
     await AsyncStorage.setItem("dadosUsuario", JSON.stringify(dadosIniciais));
     setModalMessage("Dados atualizados com sucesso!");
     setModal(true);
@@ -156,13 +172,15 @@ export default function EditarPerfil() {
         </Pressable>
       </View>
 
-      <View style={styles.main}>
+      <ScrollView style={styles.main}>
         <Pressable
           style={styles.btnVoltar}
           onPress={() => navigation.navigate("Perfil")}
         >
           <Text style={styles.txtBtnVoltar}>Voltar</Text>
         </Pressable>
+
+        <Text style={styles.titulo}>Editar Perfil</Text>
 
         <View style={styles.containerInputs}>
           <View style={{ gap: 20 }}>
@@ -185,6 +203,16 @@ export default function EditarPerfil() {
               style={styles.input}
               placeholder={cpf}
               value={cpf}
+              editable={false}
+            />
+          </View>
+
+          <View style={{ gap: 20 }}>
+            <Text style={styles.label}>CNS</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={cns}
+              value={cns}
               editable={false}
             />
           </View>
@@ -229,6 +257,22 @@ export default function EditarPerfil() {
               style={styles.imgLapis}
             />
           </View>
+
+          <View style={{ gap: 20 }}>
+            <Text style={styles.label}>Telefone</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={telefone}
+              value={telefone}
+              onChangeText={setTelefone}
+              keyboardType="numeric"
+            />
+
+            <Image
+              source={require("../../../assets/ferramenta-lapis.png")}
+              style={styles.imgLapis}
+            />
+          </View>
         </View>
 
         <View style={styles.containerBtn}>
@@ -236,9 +280,9 @@ export default function EditarPerfil() {
             <Text style={styles.txtBtn}>Salvar</Text>
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
 
-      <Footer />
+      <Footer setModalSUSVisivel={setModalSUSVisivel} />
 
       <Modal
         visible={modal}
@@ -257,6 +301,13 @@ export default function EditarPerfil() {
           </View>
         </View>
       </Modal>
+
+      <CartaoSUS
+        visivel={modalSUSVisivel}
+        aoFechar={() => setModalSUSVisivel(false)}
+        frenteSrc={require("../../../assets/cartao-frente.png")}
+        versoSrc={require("../../../assets/cartao-verso.jpg")}
+      />
     </View>
   );
 }

@@ -9,7 +9,7 @@ import { Modal } from "react-native";
 export default function Login() {
   const navigation = useNavigation();
 
-  const [cpf, setCpf] = useState("");
+  const [cns, setCns] = useState("");
   const [senha, setSenha] = useState("");
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -19,10 +19,10 @@ export default function Login() {
       const usuarioSalvo = await AsyncStorage.getItem("dadosUsuario");
       const dados = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
 
-      if (dados && dados.cpf === cpf && dados.senha === senha) {
+      if (dados && dados.cns === cns && dados.senha === senha) {
         await AsyncStorage.setItem(
           "recuperarDados",
-          JSON.stringify({ cpf, senha })
+          JSON.stringify({ cns, senha })
         );
 
         setModalMessage("Login realizado com sucesso!");
@@ -76,14 +76,14 @@ export default function Login() {
           style={styles.logo}
         />
 
-        <Text style={styles.txt1}>Informe seu CPF e senha para entrar:</Text>
+        <Text style={styles.txt1}>Informe seu CNS e senha para entrar:</Text>
 
         <View style={styles.containerInputs}>
           <TextInput
             style={styles.input}
-            placeholder="CPF"
-            value={cpf}
-            onChangeText={(text) => setCpf(text)}
+            placeholder="CNS"
+            value={cns}
+            onChangeText={(text) => setCns(text)}
             keyboardType="numeric"
           />
 

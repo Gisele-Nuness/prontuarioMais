@@ -7,27 +7,33 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import styles from "./style";
+import makeStyles from "./style";
+import { useThemedStyles } from "../../Theme/useThemedStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Header";
 import Footer from "../Footer";
 import CartaoSUS from "../CartaoSUS";
+import { useTheme } from "../../Theme/ThemeProvider";
 
 export default function Perfil() {
   const navigation = useNavigation();
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
+  const { theme, mode, toggleMode } = useTheme();
+  const styles = useThemedStyles(makeStyles);
 
   const itensPerfil = [
     {
       id: "1",
       title: "Perfil",
       text: "Visualize e edite seus dados pessoais",
+      icon: require("../../../assets/icon-perfil.png"),
     },
     {
       id: "2",
       title: "Sair",
       text: "Sair do aplicativo",
+      icon: require("../../../assets/sair.png"),
     },
   ];
 
@@ -47,6 +53,7 @@ export default function Perfil() {
         <Text style={styles.titleLegend}>{card.title}</Text>
         <Text style={styles.legendText}>{card.text}</Text>
       </View>
+      <Image source={card.icon} style={styles.cardIcon} resizeMode="contain" />
     </Pressable>
   );
 
@@ -75,10 +82,37 @@ export default function Perfil() {
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             showsVerticalScrollIndicator={false}
           />
+
+          <View style={[styles.historico, { marginTop: 10 }]}>
+            <View style={styles.textos}>
+              <Text style={styles.titleLegend}>Tema</Text>
+              <Text style={styles.legendText}>Alterar tema</Text>
+            </View>
+
+            <Pressable
+              onPress={toggleMode}
+              style={styles.themeBtn}
+              hitSlop={12}
+            >
+              <Image
+                source={require("../../../assets/sun.png")}
+                style={styles.sunIcon}
+                resizeMode="contain"
+              />
+              <Image
+                source={require("../../../assets/moon.png")}
+                style={styles.moonIcon}
+                resizeMode="contain"
+              />
+            </Pressable>
+          </View>
         </View>
       </View>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} />
+      <Footer
+        setModalSUSVisivel={setModalSUSVisivel}
+        susSelected={modalSUSVisivel}
+      />
 
       <CartaoSUS
         visivel={modalSUSVisivel}

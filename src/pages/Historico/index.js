@@ -7,7 +7,8 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import styles from "./style";
+import makeStyles from './style';
+import { useThemedStyles } from '../../Theme/useThemedStyles';
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -17,6 +18,7 @@ export default function Historico() {
   const [textoPesquisa, setTextoPesquisa] = useState("");
   const navigation = useNavigation();
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
+  const styles = useThemedStyles(makeStyles);
 
   const itensHistorico = [
     {
@@ -146,7 +148,7 @@ export default function Historico() {
         </View>
       </View>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} />
+      <Footer setModalSUSVisivel={setModalSUSVisivel} susSelected={modalSUSVisivel} />
 
       <CartaoSUS
         visivel={modalSUSVisivel}

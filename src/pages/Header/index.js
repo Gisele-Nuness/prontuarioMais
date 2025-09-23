@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Image, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import styles from "./style";
+import makeStyles from "./style";
+import { useThemedStyles } from "../../Theme/useThemedStyles";
 
 export default function Header() {
   const [imagem, setImagem] = useState(null);
+  const styles = useThemedStyles(makeStyles);
 
   useEffect(() => {
     const carregarImagem = async () => {

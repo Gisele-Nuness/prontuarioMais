@@ -1,5 +1,6 @@
 import { Text, View, Image, Pressable, Button, ScrollView } from "react-native";
-import styles from "./style";
+import makeStyles from './style';
+import { useThemedStyles } from '../../Theme/useThemedStyles';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
@@ -11,6 +12,7 @@ import CartaoSUS from "../CartaoSUS";
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
+  const styles = useThemedStyles(makeStyles);
 
   const [nome, setNome] = useState("");
   const [cns, setCns] = useState("");
@@ -165,7 +167,7 @@ export default function EditarPerfil() {
             <Image source={{ uri: imagem }} style={styles.imagem} />
           ) : (
             <Image
-              source={require("../../../assets/galeria.png")}
+              source={require("../../../assets/editar-perfil.png")}
               style={styles.imgPerfil}
             />
           )}
@@ -282,7 +284,7 @@ export default function EditarPerfil() {
         </View>
       </ScrollView>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} />
+      <Footer setModalSUSVisivel={setModalSUSVisivel} susSelected={modalSUSVisivel} />
 
       <Modal
         visible={modal}

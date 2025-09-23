@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Image, Pressable, TextInput } from "react-native";
-import styles from "./style";
+import makeStyles from "./style";
+import { useThemedStyles } from "../../Theme/useThemedStyles";
 import { useNavigation } from "@react-navigation/native";
 import CartaoSUS from "../CartaoSUS";
 import Header from "../Header";
@@ -8,6 +9,7 @@ import Footer from "../Footer";
 
 export default function Home() {
   const navigation = useNavigation();
+  const styles = useThemedStyles(makeStyles);
 
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
@@ -51,7 +53,7 @@ export default function Home() {
         </View>
 
         <View style={styles.cards}>
-          <View style={styles.cardsRow}>
+          
             <Pressable
               style={styles.historico}
               onPress={() => navigation.navigate("Historico")}
@@ -69,7 +71,7 @@ export default function Home() {
             </Pressable>
 
             <Pressable
-              style={[styles.historico, styles.exames]}
+              style={styles.historico}
               onPress={() => navigation.navigate("Exames")}
             >
               <View style={styles.textos}>
@@ -83,39 +85,46 @@ export default function Home() {
                 />
               </View>
             </Pressable>
-          </View>
-        </View>
 
-        <View style={styles.cardsBottom}>
-          <Pressable style={styles.cardSmall}>
-            <View style={styles.textos}>
-              <Text style={styles.legendText2}>Meus</Text>
-              <Text style={styles.titleText2}>MEDICAMENTOS</Text>
-            </View>
-            <View style={styles.img}>
-              <Image
-                source={require("../../../assets/remedio.png")}
-                style={styles.iconCardSmall}
-              />
-            </View>
-          </Pressable>
+            <Pressable
+              style={styles.historico}
+              onPress={() => navigation.navigate("Medicamentos")}
+            >
+              <View style={styles.textos}>
+                <Text style={styles.legendText}>Meus</Text>
+                <Text style={styles.titleText}>Medicamentos</Text>
+              </View>
+              <View style={styles.img}>
+                <Image
+                  source={require("../../../assets/remedio.png")}
+                  style={styles.iconCardSmall}
+                />
+              </View>
+            </Pressable>
 
-          <Pressable style={[styles.cardSmall, styles.cardSmallRight]}>
-            <View style={styles.textos}>
-              <Text style={styles.legendText}>Minhas</Text>
-              <Text style={styles.titleText}>ALERGIAS</Text>
-            </View>
-            <View style={styles.img}>
-              <Image
-                source={require("../../../assets/verme.png")}
-                style={styles.iconCardSmall}
-              />
-            </View>
-          </Pressable>
+            <Pressable
+              style={styles.historico}
+              onPress={() => navigation.navigate("Alergias")}
+            >
+              <View style={styles.textos}>
+                <Text style={styles.legendText}>Minhas</Text>
+                <Text style={styles.titleText}>Alergias</Text>
+              </View>
+              <View style={styles.img}>
+                <Image
+                  source={require("../../../assets/verme.png")}
+                  style={styles.iconCardSmall}
+                />
+              </View>
+            </Pressable>
+          
         </View>
       </View>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} />
+      <Footer
+        setModalSUSVisivel={setModalSUSVisivel}
+        susSelected={modalSUSVisivel}
+      />
 
       <CartaoSUS
         visivel={modalSUSVisivel}

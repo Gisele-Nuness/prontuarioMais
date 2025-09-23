@@ -7,7 +7,8 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import styles from "./style";
+import makeStyles from './style';
+import { useThemedStyles } from '../../Theme/useThemedStyles';
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -16,6 +17,7 @@ import CartaoSUS from "../CartaoSUS";
 export default function Exames() {
   const [textoPesquisa, setTextoPesquisa] = useState("");
   const navigation = useNavigation();
+  const styles = useThemedStyles(makeStyles);
 
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
@@ -68,6 +70,7 @@ export default function Exames() {
       dateISO: "2024-05-10T11:30:00-03:00",
       weekday: "Sexta-feira",
     },
+    
   ];
 
   function formatarHora(dateISO) {
@@ -137,7 +140,6 @@ export default function Exames() {
               <CartaoExame
                 exame={item}
                 onPress={() => {
-                  /* navegação */
                 }}
               />
             )}
@@ -147,7 +149,7 @@ export default function Exames() {
         </View>
       </View>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} />
+      <Footer setModalSUSVisivel={setModalSUSVisivel} susSelected={modalSUSVisivel} />
 
       <CartaoSUS
         visivel={modalSUSVisivel}

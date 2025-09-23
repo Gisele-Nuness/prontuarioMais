@@ -1,39 +1,49 @@
- import { StyleSheet } from "react-native";
- 
- export default StyleSheet.create({
- 
- header: {
-    height: 80,
-    width: "100%",
-    backgroundColor: "#1600a4ff",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-  },
+import { StyleSheet } from "react-native";
 
-  containerPerfil: {
-    width: 100,
-    alignItems: "center",
-  },
+export default function makeStyles(t) {
+  const isDark = t.name === "dark";
 
-  containerIcons: {
-    width: 100,
-    flexDirection: "row",
-    gap: 20,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    right: 25,
-  },
+  return StyleSheet.create({
+    header: {
+      height: 80,
+      width: "100%",
+      backgroundColor: isDark ? t.colors.surface : t.colors.primary,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottomWidth: 1,
+      borderBottomColor: t.colors.border,
+      shadowColor: "#000",
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      shadowOffset: { width: 0, height: 4 },
+      elevation: 2,
+    },
 
-  iconPerfil: {
-    width: 62,
-    height: 62,
-    borderRadius: 100,
-  },
+    containerPerfil: {
+      width: 100,
+      alignItems: "center",
+    },
 
-  icons: {
-    width: 20,
-    height: 20,
-  },
-});
+    containerIcons: {
+      width: 100,
+      flexDirection: "row",
+      gap: 20,
+      alignItems: "center",
+      justifyContent: "flex-end",
+      right: 25,
+    },
+
+    iconPerfil: {
+      width: 62,
+      height: 62,
+      borderRadius: 100,
+    },
+
+    icons: {
+      width: 20,
+      height: 20,
+      tintColor: isDark ? t.colors.text : "#FFF",
+    },
+  });
+}

@@ -1,157 +1,121 @@
 import { StyleSheet } from "react-native";
 
-const PRIMARY = "#1600a4ff";
-const PRIMARY_SOFT = "#1600a446"; // fundo translúcido
+export default function makeStyles(t) {
+  const isDark = t.name === "dark";
 
-export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-    overflow: "hidden",
-  },
-  
-  main: {
-    flex: 1,
-    width: "100%",
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    alignItems: "center",
-  },
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: t.colors.background,
+      alignItems: "center",
+      justifyContent: "flex-start",
+      flexDirection: "column",
+      overflow: "hidden",
+    },
 
+    main: {
+      flex: 1,
+      width: "100%",
+      paddingHorizontal: 16,
+      paddingTop: 20,
+      alignItems: "center",
+    },
 
-  searchWrapper: {
-    width: "100%",
-    height: 50,
-    backgroundColor: PRIMARY_SOFT,
-    borderRadius: 30,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 14,
-    marginBottom: 50,
-    marginTop: 10,
-  },
+    searchWrapper: {
+      width: "100%",
+      height: 50,
+      backgroundColor: t.colors.primarySoft,
+      borderRadius: 30,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 14,
+      marginBottom: 50,
+      marginTop: 10,
+    },
 
-  buscar: {
-    flex: 1,
-    height: 50,
-    color: "#2A2A2A",
-    fontSize: 16,
-  },
+    buscar: {
+      flex: 1,
+      height: 50,
+      color: t.colors.text,
+      fontSize: 16,
+    },
 
-  iconBuscar: {
-    width: 40,
-    height: 40,
-    marginRight: 8,
-  },
+    iconBuscar: {
+      width: 40,
+      height: 40,
+      marginRight: 8,
+      tintColor: isDark ? t.colors.text : t.colors.primary,
+    },
 
-  cards: {
-    width: "100%",
-    marginBottom: 40,
-  },
+    cards: {
+      width: "100%",
+      marginBottom: 40,
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "space-between",
+    },
 
-  cardsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 12,
-  },
+    historico: {
+      width: "48%",
+      height: 100,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: t.colors.primarySoft,
+      borderRadius: 20,
+      paddingHorizontal: 14,
+      marginBottom: 20,
+    },
 
-  historico: {
-    flex: 1,
-    height: 100,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: PRIMARY_SOFT,
-    borderRadius: 20,
-    paddingHorizontal: 14,
-  },
+    textos: {
+      gap: 4,
+    },
 
-  textos: {
-    gap: 4,
-  },
+    legendText: {
+      color: isDark ? t.colors.text : t.colors.primary,
+      fontSize: 16,
+      opacity: 0.8,
+    },
 
-  legendText: {
-    color: "#1600A4",
-    fontSize: 16,
-    opacity: 0.8,
-  },
+    titleText: {
+      color: isDark ? t.colors.text : t.colors.primary,
+      fontWeight: "700",
+      letterSpacing: 0.3,
+      fontSize: 18,
+    },
 
-  titleText: {
-    color: "#1600A4",
-    fontWeight: "700",
-    letterSpacing: 0.3,
-    fontSize: 18,
+    img: {
+      alignItems: "center",
+      justifyContent: "center",
+    },
 
-  },
+    iconCards: {
+      width: 40,
+      height: 40,
+      tintColor: isDark ? t.colors.text : t.colors.primary,
+    },
 
-  img: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    banner: {
+      width: "100%",
+      height: 200,
+      borderRadius: 18,
+      borderColor: t.colors.background,
+      overflow: "hidden",
+      marginBottom: 60,
+      backgroundColor: t.colors.primary,
+    },
 
-  iconCards: {
-    width: 40,
-    height: 40,
-  },
+    bannerImage: {
+      width: "100%",
+      height: "100%",
+    },
 
-  banner: {
-    width: "100%",
-    height: 200,
-    borderRadius: 18,
-    borderColor: "#fff",
-    overflow: "hidden",
-    marginBottom: 60,
-    backgroundColor: PRIMARY,
-  },
-
-  bannerImage: {
-    width: "100%",
-    height: "100%",
-  },
-
-  cardsBottom: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    gap: 12,
-    marginTop: 4,
-  },
-
-  cardSmall: {
-    width: "45%",
-    height: 90,
-    backgroundColor: PRIMARY_SOFT,
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-    legendText2: {
-    color: "#1600A4",
-    fontSize: 14,
-    opacity: 0.8,
-  },
-
-  titleText2: {
-    color: "#1600A4",
-    fontWeight: "700",
-    letterSpacing: 0.2,
-    fontSize: 16,
-
-  },
-
-  iconCardSmall: {
-    width: 30,
-    height: 30,
-    position: 'absolute',
-    bottom: 5,
-    right: 12,
-  },
-
- 
-});
+    iconCardSmall: {
+      width: 30,
+      height: 30,
+      position: "absolute",
+      bottom: 5,
+      right: 12,
+    },
+  });
+}

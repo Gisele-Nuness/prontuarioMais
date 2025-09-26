@@ -21,8 +21,17 @@ export default function makeStyles(t) {
     },
 
     containerPerfil: {
-      width: 100,
+      width: 180,
       alignItems: "center",
+      display: "flex",
+      flexDirection: "row",
+      marginLeft: 10,
+      gap: 10
+    },
+
+    nome: {
+      
+      color: isDark ? t.colors.text : t.colors.background 
     },
 
     containerIcons: {
@@ -43,7 +52,7 @@ export default function makeStyles(t) {
     icons: {
       width: 20,
       height: 20,
-      tintColor: isDark ? t.colors.text : "#FFF",
+      tintColor: isDark ? t.colors.text : t.colors.background,
     },
   });
 }

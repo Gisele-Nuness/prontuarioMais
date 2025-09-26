@@ -62,6 +62,25 @@ export default function Perfil() {
       <Header />
 
       <View style={styles.main}>
+        <View style={[styles.historico, { marginBottom: 10 }]}>
+          <View style={styles.textos}>
+            <Text style={styles.titleLegend}>Tema</Text>
+            <Text style={styles.legendText}>Alterar tema</Text>
+          </View>
+
+          <Pressable onPress={toggleMode} style={styles.themeBtn} hitSlop={12}>
+            <Image
+              source={require("../../../assets/sun.png")}
+              style={styles.sunIcon}
+              resizeMode="contain"
+            />
+            <Image
+              source={require("../../../assets/moon.png")}
+              style={styles.moonIcon}
+              resizeMode="contain"
+            />
+          </Pressable>
+        </View>
         <View style={styles.cards}>
           <FlatList
             data={itensPerfil}
@@ -82,30 +101,6 @@ export default function Perfil() {
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             showsVerticalScrollIndicator={false}
           />
-
-          <View style={[styles.historico, { marginTop: 10 }]}>
-            <View style={styles.textos}>
-              <Text style={styles.titleLegend}>Tema</Text>
-              <Text style={styles.legendText}>Alterar tema</Text>
-            </View>
-
-            <Pressable
-              onPress={toggleMode}
-              style={styles.themeBtn}
-              hitSlop={12}
-            >
-              <Image
-                source={require("../../../assets/sun.png")}
-                style={styles.sunIcon}
-                resizeMode="contain"
-              />
-              <Image
-                source={require("../../../assets/moon.png")}
-                style={styles.moonIcon}
-                resizeMode="contain"
-              />
-            </Pressable>
-          </View>
         </View>
       </View>
 

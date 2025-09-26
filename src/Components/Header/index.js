@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Pressable } from "react-native";
+import { View, Image, Pressable, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import makeStyles from "./style";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
 
 export default function Header() {
   const [imagem, setImagem] = useState(null);
+  const [nome, setNome] = useState("")
   const styles = useThemedStyles(makeStyles);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function Header() {
       if (dados) {
         const usuario = JSON.parse(dados);
         if (usuario.imagem) setImagem(usuario.imagem);
+        setNome(usuario.nome)
       }
     };
     carregarImagem();
@@ -30,6 +32,7 @@ export default function Header() {
           }
           style={styles.iconPerfil}
         />
+        <Text style={styles.nome}>{nome}</Text>
       </View>
 
       <View style={styles.containerIcons}>

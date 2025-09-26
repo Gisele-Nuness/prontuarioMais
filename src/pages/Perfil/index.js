@@ -11,9 +11,9 @@ import makeStyles from "./style";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../Header";
-import Footer from "../Footer";
-import CartaoSUS from "../CartaoSUS";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
+import CartaoSUS from "../../Components/CartaoSUS";
 import { useTheme } from "../../Theme/ThemeProvider";
 
 export default function Perfil() {

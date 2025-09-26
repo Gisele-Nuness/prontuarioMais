@@ -1,14 +1,16 @@
 import { Text, View, Image, Pressable, Button, ScrollView } from "react-native";
-import makeStyles from './style';
-import { useThemedStyles } from '../../Theme/useThemedStyles';
+import makeStyles from "./style";
+import { useThemedStyles } from "../../Theme/useThemedStyles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
 import { Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-import Footer from "../Footer";
-import CartaoSUS from "../CartaoSUS";
+import Footer from "../../Components/Footer";
+import CartaoSUS from "../../Components/CartaoSUS";
+import { ModalEscolhaFoto } from "../../Controllers/foto";
+import Data from "../../Controllers/data";
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
@@ -25,6 +27,7 @@ export default function EditarPerfil() {
   const [modalMessage, setModalMessage] = useState("");
   const [imagem, setImagem] = useState(null);
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
+  const [abrirEscolhaFoto, setAbrirEscolhaFoto] = useState(false);
 
   const route = useRoute();
   const dadosUsuario = route.params?.dadosUsuario ?? {};
@@ -58,86 +61,9 @@ export default function EditarPerfil() {
     carregarDados();
   }, []);
 
-  const solicitarPermissoes = async () => {
-    const camera = await ImagePicker.requestCameraPermissionsAsync();
-    const galeria = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (camera.status !== "granted" || galeria.status !== "granted") {
-      Alert.alert(
-        "Permissão negada",
-        "é necessário permitir acesso á camera e galeria."
-      );
-      return false;
-    }
-
-    return true;
-  };
-
-  const tirarFoto = async () => {
-    const permissoes = await solicitarPermissoes();
-    if (!permissoes) return;
-
-    const resultado = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!resultado.canceled) {
-      setImagem(resultado.assets[0].uri);
-    }
-  };
-
-  const escolherDaGaleria = async () => {
-    const permissoes = await solicitarPermissoes();
-    if (!permissoes) return;
-
-    const resultado = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-      aspect: [4, 3],
-    });
-
-    if (!resultado.canceled) {
-      setImagem(resultado.assets[0].uri);
-    }
-  };
-
-  const maskDateBR = (value) => {
-    const v = value.replace(/\D/g, "").slice(0, 8);
-    const dia = v.slice(0, 2);
-    const mes = v.slice(2, 4);
-    const ano = v.slice(4, 8);
-    return [dia, mes, ano].filter(Boolean).join("/");
-  };
-
-  const isValidDateBR = (s) => {
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return false;
-    const [dd, mm, yyyy] = s.split("/").map(Number);
-    const d = new Date(yyyy, mm - 1, dd);
-
-    if (
-      d.getFullYear() !== yyyy ||
-      d.getMonth() !== mm - 1 ||
-      d.getDate() !== dd
-    )
-      return false;
-
-    const hoje = new Date();
-    if (d > hoje) return false;
-    const limite = new Date(
-      hoje.getFullYear() - 120,
-      hoje.getMonth(),
-      hoje.getDate()
-    );
-    if (d < limite) return false;
-
-    return true;
-  };
-
+ 
   const salvarDados = async () => {
-    if (!isValidDateBR(dataNasc)) {
+    if (!Data.isValidDateBR(dataNasc)) {
       setModalMessage(
         "Data inválida. Use o formato DD/MM/AAAA e uma data válida."
       );
@@ -162,7 +88,7 @@ export default function EditarPerfil() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={() => escolherDaGaleria()}>
+        <Pressable onPress={() => setAbrirEscolhaFoto(true)}>
           {imagem ? (
             <Image source={{ uri: imagem }} style={styles.imagem} />
           ) : (
@@ -284,7 +210,10 @@ export default function EditarPerfil() {
         </View>
       </ScrollView>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} susSelected={modalSUSVisivel} />
+      <Footer
+        setModalSUSVisivel={setModalSUSVisivel}
+        susSelected={modalSUSVisivel}
+      />
 
       <Modal
         visible={modal}
@@ -309,6 +238,13 @@ export default function EditarPerfil() {
         aoFechar={() => setModalSUSVisivel(false)}
         frenteSrc={require("../../../assets/cartao-frente.png")}
         versoSrc={require("../../../assets/cartao-verso.jpg")}
+      />
+
+      <ModalEscolhaFoto
+        visivel={abrirEscolhaFoto}
+        aoFechar={() => setAbrirEscolhaFoto(false)}
+        setImagem={setImagem}
+        setAbrirEscolhaFoto={setAbrirEscolhaFoto}
       />
     </View>
   );

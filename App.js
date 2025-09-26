@@ -31,7 +31,7 @@ function AppInner() {
       />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
-          initialRouteName="EditarPerfil"
+          initialRouteName="Home"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />

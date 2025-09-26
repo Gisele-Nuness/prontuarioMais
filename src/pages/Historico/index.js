@@ -10,9 +10,9 @@ import {
 import makeStyles from './style';
 import { useThemedStyles } from '../../Theme/useThemedStyles';
 import { useNavigation } from "@react-navigation/native";
-import Header from "../Header";
-import Footer from "../Footer";
-import CartaoSUS from "../CartaoSUS";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
+import CartaoSUS from "../../Components/CartaoSUS";
 
 export default function Historico() {
   const [textoPesquisa, setTextoPesquisa] = useState("");

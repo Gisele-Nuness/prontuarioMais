@@ -128,6 +128,17 @@ export default function makeStyles(t) {
       fontSize: 16,
     },
 
+    picker: {
+      width: 300,
+      height: 40,
+      backgroundColor: t.colors.background,
+      borderBottomWidth: 2,
+      borderColor: t.colors.border,
+      color: t.colors.text,
+      fontSize: 16,
+      marginTop: 20,
+    },
+
     containerBtn: {
       width: "100%",
       alignItems: "center",

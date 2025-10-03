@@ -76,7 +76,16 @@ export default StyleSheet.create({
     height: 220,
     alignItems: "center",
     justifyContent: "center",
-    top: 50,
+  },
+
+  txt: {
+    width: "100%",
+    color: "#1600a4ff",
+    fontSize: 24,
+    fontWeight: "bold",
+    alignItems: "flex-start",
+    left: 45,
+    
   },
 
   txt1: {
@@ -86,7 +95,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     alignItems: "flex-start",
     left: 45,
-    top: 50,
+   top: 40,
   },
 
   containerInputs: {
@@ -112,8 +121,8 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 20,
-    marginTop: 30,
-    marginBottom: 60
+    marginTop: 50,
+    marginBottom: 50
    
   },
 
@@ -135,22 +144,5 @@ export default StyleSheet.create({
     textTransform: "uppercase",
   },
 
-  modal: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContainer: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
-  },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: "center",
-  },
+
 });

@@ -85,7 +85,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     alignItems: "flex-start",
     left: 45,
-    top: 50,
+  
   },
 
   containerInputs: {
@@ -93,7 +93,7 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    gap: 45,
+    gap: 40,
     marginTop: 50,
   },
 

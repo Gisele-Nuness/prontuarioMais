@@ -4,39 +4,72 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Modal } from "react-native";
+import ModalPadrao from "../../Components/Modal";
+import { api } from "../../services/api";
 
 export default function Login() {
   const navigation = useNavigation();
 
-  const [cns, setCns] = useState("");
+  const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const recuperarDados = async () => {
-    try {
-      const usuarioSalvo = await AsyncStorage.getItem("dadosUsuario");
-      const dados = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+const soNumeros = (v) => (v || "").replace(/\D/g, "");
 
-      if (dados && dados.cns === cns && dados.senha === senha) {
-        await AsyncStorage.setItem(
-          "recuperarDados",
-          JSON.stringify({ cns, senha })
-        );
+const entrar = async () => {
+  const cpfLimpo = soNumeros(cpf);
+  
+  if (!cpfLimpo || !senha) {
+    setModal(true);
+    setModalMessage("Informe CPF e senha.");
+    return;
+  }
 
-        setModalMessage("Login realizado com sucesso!");
-        setModal(true);
-        navigation.navigate("Splash2");
-      } else {
-        setModalMessage("Credenciais inválidas");
-        setModal(true);
-      }
-    } catch (e) {
-      setModalMessage("Erro ao realizar login");
+  if (cpfLimpo.length !== 11) {
+    setModal(true);
+    setModalMessage("CPF deve ter 11 dígitos.");
+    return;
+  }
+
+  if (senha.length < 6) {
+    setModal(true);
+    setModalMessage("A senha deve ter pelo menos 6 caracteres.");
+    return;
+  }
+
+  try {
+    const resp = await api.post("/pacientes/login", {
+      cpfPaciente: cpfLimpo,
+      senhaPaciente: senha,
+    });
+
+    const { token, paciente } = resp?.data ?? {};
+    if (token && paciente) {
+      await AsyncStorage.multiSet([
+        ["@authToken", token],
+        ["@pacienteId", String(paciente.idPaciente)],
+        ["@pacienteNome", paciente.nomePaciente ?? ""],
+        ["@pacienteCpf", cpfLimpo],
+      ]);
+
+      setModalMessage("Login realizado com sucesso!");
       setModal(true);
+      navigation.navigate("Splash2");
+    } else {
+      setModal(true);
+      setModalMessage("Credenciais inválidas.");
     }
-  };
+  } catch (e) {
+    if (e?.response?.status === 401) {
+      setModal(true);
+      setModalMessage("Credenciais inválidas.");
+      return;
+    }
+    setModal(true);
+    setModalMessage("Erro ao realizar login. Tente novamente.");
+  }
+};
 
   return (
     <View style={styles.container}>
@@ -76,14 +109,14 @@ export default function Login() {
           style={styles.logo}
         />
 
-        <Text style={styles.txt1}>Informe seu CNS e senha para entrar:</Text>
+        <Text style={styles.txt1}>Informe seu CPF e senha para entrar:</Text>
 
         <View style={styles.containerInputs}>
           <TextInput
             style={styles.input}
-            placeholder="CNS"
-            value={cns}
-            onChangeText={(text) => setCns(text)}
+            placeholder="CPF"
+            value={cpf}
+            onChangeText={(text) => setCpf(text)}
             keyboardType="numeric"
           />
 
@@ -97,7 +130,7 @@ export default function Login() {
         </View>
 
         <View style={styles.containerBtn}>
-          <Pressable style={styles.btn} onPress={recuperarDados}>
+          <Pressable style={styles.btn} onPress={entrar}>
             <Text style={styles.txtBtn}>Entrar</Text>
           </Pressable>
 
@@ -107,23 +140,12 @@ export default function Login() {
         </View>
       </View>
 
-      <Modal
+      <ModalPadrao
         visible={modal}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setModal(false)}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalText}>{modalMessage}</Text>
-            <Button
-              title="Fechar"
-              color="#1600a4ff"
-              onPress={() => setModal(false)}
-            />
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setModal(false)}
+        modalMessage={modalMessage}
+      />
+
     </View>
   );
 }

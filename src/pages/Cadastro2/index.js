@@ -1,66 +1,148 @@
-import { Text, View, Image, Pressable, Button } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  Button,
+  ScrollView,
+  TextInput,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
 import styles from "./style";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
-import { TextInput } from "react-native";
 import axios from "axios";
-import { Modal } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "../../services/api";
+import ModalPadrao from "../../Components/Modal";
 
-export default function Login() {
+export default function Cadastro2() {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const pacienteId = route.params?.pacienteId;
+
+  const [step, setStep] = useState(1);
 
   const [cep, setCep] = useState("");
   const [logradouro, setLogradouro] = useState("");
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
+  const [uf, setUf] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmaSenha, setConfirmaSenha] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const route = useRoute();
-  const dadosIniciais = route.params?.dadosIniciais ?? {};
 
-  const url = `https://viacep.com.br/ws/${cep}/json/`;
+  const urlViaCep = `https://viacep.com.br/ws/${cep}/json/`;
 
   const buscarEndereco = async () => {
-    if (cep.length === 8) {
+    const cepLimpo = (cep || "").replace(/\D/g, "");
+    if (cepLimpo.length === 8) {
       try {
-        const response = await axios.get(url);
-        setLogradouro(response.data.logradouro || "");
-        setBairro(response.data.bairro || "");
-        setCidade(response.data.localidade || "");
-      } catch (error) {
-        setModalMessage("Erro ao buscar dados do CEP");
+        const { data } = await axios.get(urlViaCep);
+        if (data?.erro) return abrirModal("CEP não encontrado.");
+        setLogradouro(data.logradouro || "");
+        setBairro(data.bairro || "");
+        setCidade(data.localidade || "");
+        setEstado(data.estado || "");
+        setUf(data.uf || "");
+      } catch {
         setModal(true);
+        setModalMessage("Erro ao buscar dados do CEP.");
       }
     }
   };
 
+  const validarEndereco = () => {
+    if (
+      !cep ||
+      !logradouro ||
+      !numero ||
+      !bairro ||
+      !cidade ||
+      !estado ||
+      !uf
+    ) {
+      setModal(true);
+      setModalMessage("Preencha todos os campos.");
+      return false;
+    }
+    const cepLimpo = cep.replace(/\D/g, "");
+    if (cepLimpo.length !== 8) {
+      setModal(true);
+      setModalMessage("CEP deve ter 8 dígitos.");
+      return false;
+    }
+    return true;
+  };
+
+  const validarCredenciais = () => {
+    if (!email || !senha || !confirmaSenha) {
+      setModal(true);
+      setModalMessage("Preencha todos os campos.");
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setModal(true);
+      setModalMessage("Digite um e-mail válido.");
+      return false;
+    }
+    if (senha.length < 6) {
+      setModal(true);
+      setModalMessage("A senha deve ter pelo menos 6 caracteres.");
+      return false;
+    }
+    if (senha !== confirmaSenha) {
+      setModal(true);
+      setModalMessage("As senhas não conferem.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleProximo = () => {
+    if (!validarEndereco()) return;
+    setStep(2);
+  };
+
   const salvarDados = async () => {
-    if (!cep || !logradouro || !numero || !bairro || !cidade) {
-      alert("Por favor, preencha todos os campos.");
+    if (!pacienteId) {
+      setModal(true);
+      setModalMessage("Paciente não identificado. Volte e refaça a busca.");
       return;
     }
+    if (!validarCredenciais()) return;
 
-    const dadosUsuario = {
-      ...dadosIniciais,
-      cep,
-      logradouro,
-      numero,
-      bairro,
-      cidade,
+    const payload = {
+      cepPaciente: cep,
+      logradouroPaciente: logradouro,
+      numLogradouroPaciente: numero,
+      bairroPaciente: bairro,
+      cidadePaciente: cidade,
+      estadoPaciente: estado,
+      ufPaciente: uf,
+      emailPaciente: email,
+      senhaPaciente: senha,
     };
 
     try {
-      await AsyncStorage.setItem("dadosUsuario", JSON.stringify(dadosUsuario));
-      setLoading(false);
-      setModalMessage("Cadastro realizado com sucesso! Faça Login");
+      setLoading(true);
+      await api.put(`/pacientes/${pacienteId}`, payload);
       setModal(true);
+      setModalMessage("Cadastro criado com sucesso! Faça login.");
       navigation.navigate("Login");
     } catch (e) {
-      setModalMessage("Erro ao salvar os dados no AsyncStorage");
       setModal(true);
+      setModalMessage("Erro ao salvar no servidor. Tente novamente.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,18 +152,15 @@ export default function Login() {
         <View style={styles.containerHora}>
           <Text style={styles.hora}>14:44</Text>
         </View>
-
         <View style={styles.containerIcons}>
           <Image
             source={require("../../../assets/sinal-de-rede.png")}
             style={styles.icons}
           />
-
           <Image
             source={require("../../../assets/sinal-wifi.png")}
             style={styles.icons}
           />
-
           <Image
             source={require("../../../assets/barra-de-bateria.png")}
             style={styles.icons}
@@ -102,71 +181,117 @@ export default function Login() {
           style={styles.logo}
         />
 
-        <Text style={styles.txt1}>Complete seu cadastro:</Text>
+        <ScrollView
+          contentContainerStyle={styles.containerInputs}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={styles.txt1}>
+            {step === 1 ? "Cadastre seu endereço:" : "Crie suas credenciais:"}
+          </Text>
+          {step === 1 ? (
+            <>
+              <TextInput
+                style={styles.input}
+                placeholder="CEP (8 dígitos)"
+                value={cep}
+                onChangeText={setCep}
+                onBlur={buscarEndereco}
+                keyboardType="numeric"
+                maxLength={9}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Logradouro"
+                value={logradouro}
+                onChangeText={setLogradouro}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Número"
+                value={numero}
+                onChangeText={setNumero}
+                keyboardType="numeric"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Bairro"
+                value={bairro}
+                onChangeText={setBairro}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Cidade"
+                value={cidade}
+                onChangeText={setCidade}
+              />
 
-        <View style={styles.containerInputs}>
-          <TextInput
-            style={styles.input}
-            placeholder="CEP"
-            value={cep}
-            onChangeText={setCep}
-            onBlur={buscarEndereco}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Logradouro"
-            value={logradouro}
-            onChangeText={(text) => setLogradouro(text)}
-          />
+              <TextInput
+                style={styles.input}
+                placeholder="Estado"
+                value={estado}
+                onChangeText={setEstado}
+              />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Número"
-            value={numero}
-            onChangeText={(text) => setNumero(text)}
-            keyboardType="numeric"
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Bairro"
-            value={bairro}
-            onChangeText={(text) => setBairro(text)}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Cidade"
-            value={cidade}
-            onChangeText={(text) => setCidade(text)}
-          />
-        </View>
+              <TextInput
+                style={styles.input}
+                placeholder="UF"
+                value={uf}
+                onChangeText={setUf}
+              />
+            </>
+          ) : (
+            <>
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Digite seu e-mail"
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <TextInput
+                style={styles.input}
+                value={senha}
+                onChangeText={setSenha}
+                placeholder="Digite sua senha"
+                secureTextEntry
+              />
+              <TextInput
+                style={styles.input}
+                value={confirmaSenha}
+                onChangeText={setConfirmaSenha}
+                placeholder="Confirme sua senha"
+                secureTextEntry
+              />
+            </>
+          )}
+        </ScrollView>
 
         <View style={styles.containerBtn}>
-          <Pressable style={styles.btn} onPress={salvarDados}>
-            <Text style={styles.txtBtn}>Cadastrar</Text>
-          </Pressable>
+          {step === 1 ? (
+            <Pressable style={styles.btn} onPress={handleProximo}>
+              <Text style={styles.txtBtn}>Próximo</Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              style={styles.btn}
+              onPress={salvarDados}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <Text style={styles.txtBtn}>Cadastrar</Text>
+              )}
+            </Pressable>
+          )}
         </View>
       </View>
-
-      <Modal
+      <ModalPadrao
         visible={modal}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setModal(false)}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalText}>{modalMessage}</Text>
-            <Button
-              title="Fechar"
-              color="#1600a4ff"
-              onPress={() => setModal(false)}
-            />
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setModal(false)}
+        modalMessage={modalMessage}
+      />
     </View>
   );
 }

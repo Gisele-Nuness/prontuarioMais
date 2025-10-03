@@ -3,8 +3,8 @@ import { StatusBar } from "react-native";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { ThemeProvider, useTheme } from "./src/Theme/ThemeProvider"; // << novo
-// Suas telas
+import { ThemeProvider, useTheme } from "./src/Theme/ThemeProvider";
+
 import Splash from "./src/pages/Splash";
 import BemVindo from "./src/pages/BemVindo";
 import Login from "./src/pages/Login";
@@ -31,7 +31,7 @@ function AppInner() {
       />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="EditarPerfil"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />

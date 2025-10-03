@@ -1,25 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Image, Pressable, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import makeStyles from "./style";
+import { useRoute, useFocusEffect  } from "@react-navigation/native";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
+import { buscarConta } from "../../Controllers/usuario";
 
 export default function Header() {
   const [imagem, setImagem] = useState(null);
   const [nome, setNome] = useState("")
   const styles = useThemedStyles(makeStyles);
+  const route = useRoute();
 
-  useEffect(() => {
-    const carregarImagem = async () => {
-      const dados = await AsyncStorage.getItem("dadosUsuario");
-      if (dados) {
-        const usuario = JSON.parse(dados);
-        if (usuario.imagem) setImagem(usuario.imagem);
-        setNome(usuario.nome)
+  const routePacienteId = route.params?.pacienteId;
+
+  useFocusEffect(
+    useCallback(() => {
+      async function carregar() {
+        try {
+          const dados = await buscarConta(routePacienteId);
+          setNome(dados.nome);
+          setImagem(dados.imagem);
+        } catch (e) {
+          setModal(true);
+          setModalMessage("Erro ao carregar dados do usuário.");
+        }
       }
-    };
-    carregarImagem();
-  }, []);
+      carregar();
+    }, [])
+  );
 
   return (
     <View style={styles.header}>

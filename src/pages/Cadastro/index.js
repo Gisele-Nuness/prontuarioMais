@@ -1,41 +1,107 @@
-import { Text, View, Image, Pressable, Button, ScrollView } from "react-native";
+import { Text, View, Image, Pressable } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
-import { Modal } from "react-native";
-import Data from "../../Controllers/data";
+import ModalPadrao from "../../Components/Modal";
+import { api } from "../../services/api";
 
 export default function Login() {
   const navigation = useNavigation();
 
-  const [nome, setNome] = useState("");
   const [cns, setCns] = useState("");
-  const [senha, setSenha] = useState("");
-  const [email, setEmail] = useState("");
-  const [dataNasc, setDataNasc] = useState("");
-  
+  const [cpf, setCpf] = useState("");
+
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
+  const soNumeros = (v) => (v || "").replace(/\D/g, "");
 
-  const salvarDados = async () => {
-    if (!nome || !cns || !senha || !email || !dataNasc) {
-      setModalMessage("Por favor, preencha todos os campos.");
+  const procurarCadastro = async () => {
+    const cpfLimpo = soNumeros(cpf);
+    const cnsLimpo = soNumeros(cns);
+
+    if (!cpfLimpo && !cnsLimpo) {
       setModal(true);
+      setModalMessage("Informe ao menos CPF ou Carteirinha do SUS (CNS).");
+      return;
+    }
+    if (cpfLimpo && cpfLimpo.length !== 11) {
+      setModal(true);
+      setModalMessage("CPF deve ter 11 dígitos.");
+      return;
+    }
+    if (cnsLimpo && cnsLimpo.length > 20) {
+      setModal(true);
+      setModalMessage("O Cartão SUS (CNS) deve ter no máximo 20 caracteres.");
       return;
     }
 
-    if (!Data.isValidDateBR(dataNasc)) {
-      setModalMessage(
-        "Data inválida. Use o formato DD/MM/AAAA e uma data válida."
-      );
-      setModal(true);
-      return;
-    }
+    try {
+      setModal(false);
+      setModalMessage("");
+      // opcional: exiba um loader visual se quiser
+      // setLoading(true);
 
-    const dadosIniciais = { nome, cns, senha, email, dataNasc };
-    navigation.navigate("Cadastro2", { dadosIniciais });
+      let page = 1;
+      const perPage = 50;
+      let encontrado = null;
+
+      while (true) {
+        const resp = await api.get("/pacientes", {
+          params: { page, per_page: perPage },
+        });
+
+        const payload = resp?.data;
+        const lista = payload?.data ?? [];
+
+        encontrado =
+          lista.find(
+            (p) =>
+              (cpfLimpo && soNumeros(p.cpfPaciente) === cpfLimpo) ||
+              (cnsLimpo && soNumeros(p.cartaoSusPaciente) === cnsLimpo)
+          ) || null;
+
+        if (encontrado) break;
+
+        const current = payload?.current_page ?? page;
+        const last = payload?.last_page ?? page;
+        if (current >= last) break;
+
+        page = current + 1;
+      }
+
+      if (!encontrado) {
+        setModalMessage("Paciente não encontrado.");
+        setModal(true);
+        return;
+      }
+
+      const cep = encontrado.cepPaciente;
+      const precisaCompletar = !cep || String(cep).trim() === "";
+
+      if (precisaCompletar) {
+        setModalMessage("Paciente encontrado, complete seu cadastro.");
+        setModal(true);
+        navigation.navigate("Cadastro2", {
+          pacienteId: encontrado.idPaciente,
+          paciente: encontrado,
+        });
+      } else {
+        setModalMessage("Paciente já cadastrado, faça login com sua senha.");
+        setModal(true);
+        navigation.navigate("Login", {
+          cpf: cpfLimpo || null,
+          cns: cnsLimpo || null,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      setModal(true);
+      setModalMessage("Erro ao buscar paciente. Tente novamente.");
+    } finally {
+      // setLoading(false);
+    }
   };
 
   return (
@@ -76,71 +142,45 @@ export default function Login() {
           style={styles.logo}
         />
 
-        <Text style={styles.txt1}>Faça seu cadastro:</Text>
+        <Text style={styles.txt}>Primeira vez por aqui?</Text>
+
+        <Text style={styles.txt1}>
+          Informe seu CPF e Carteirinha do SUS
+        </Text>
+        <Text style={styles.txt1}>
+          para buscarmos seu cadastro:
+        </Text>
 
         <View style={styles.containerInputs}>
           <TextInput
             style={styles.input}
-            placeholder="Seu nome completo"
-            value={nome}
-            onChangeText={(text) => setNome(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="CNS"
-            value={cns}
-            onChangeText={(text) => setCns(text)}
+            placeholder="CPF"
+            value={cpf}
+            onChangeText={(text) => setCpf(text)}
             keyboardType="numeric"
           />
 
           <TextInput
             style={styles.input}
-            placeholder="Senha"
-            secureTextEntry={true}
-            value={senha}
-            onChangeText={(text) => setSenha(text)}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Seu email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Sua data de nascimento"
-            value={dataNasc}
-            onChangeText={(text) => setDataNasc(Data.maskDateBR(text))}
+            placeholder="Número da Carteirinha do SUS"
+            value={cns}
+            onChangeText={(text) => setCns(text)}
             keyboardType="numeric"
           />
         </View>
 
         <View style={styles.containerBtn}>
-          <Pressable style={styles.btn} onPress={salvarDados}>
+          <Pressable style={styles.btn} onPress={procurarCadastro}>
             <Text style={styles.txtBtn}>Próximo</Text>
           </Pressable>
         </View>
       </View>
 
-      <Modal
+      <ModalPadrao
         visible={modal}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setModal(false)}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalText}>{modalMessage}</Text>
-            <Button
-              title="Fechar"
-              color="#1600a4ff"
-              onPress={() => setModal(false)}
-            />
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setModal(false)}
+        modalMessage={modalMessage}
+      />
     </View>
   );
 }

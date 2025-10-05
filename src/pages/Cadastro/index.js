@@ -40,8 +40,6 @@ export default function Login() {
     try {
       setModal(false);
       setModalMessage("");
-      // opcional: exiba um loader visual se quiser
-      // setLoading(true);
 
       let page = 1;
       const perPage = 50;

@@ -29,12 +29,19 @@ export default function Perfil() {
       text: "Visualize e edite seus dados pessoais",
       icon: require("../../../assets/icon-perfil.png"),
     },
-    {
+        {
       id: "2",
+      title: "Endereço",
+      text: "Alterar endereço cadastrado",
+      icon: require("../../../assets/endereco.png"),
+    },
+    {
+      id: "3",
       title: "Sair",
       text: "Sair do aplicativo",
       icon: require("../../../assets/sair.png"),
     },
+
   ];
 
   const sair = async () => {
@@ -94,6 +101,9 @@ export default function Perfil() {
                   }
                   if (item.title === "Perfil") {
                     navigation.navigate("EditarPerfil");
+                  }
+                  if (item.title === "Endereço") {
+                    navigation.navigate("EditarEndereco");
                   }
                 }}
               />

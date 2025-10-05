@@ -11,7 +11,6 @@ import {
   Modal,
   Platform,
   ActivityIndicator,
-
 } from "react-native";
 import makeStyles from "./style";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
@@ -19,12 +18,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Footer from "../../Components/Footer";
 import CartaoSUS from "../../Components/CartaoSUS";
-import { ModalEscolhaFoto } from "../../Controllers/foto";
 import { api } from "../../services/api";
 import { buscarConta } from "../../Controllers/usuario";
 import { Picker } from "@react-native-picker/picker";
 import Data from "../../Controllers/data";
-
+import Header from "../../Components/Header";
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
@@ -38,20 +36,15 @@ export default function EditarPerfil() {
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
-  const [abrirEscolhaFoto, setAbrirEscolhaFoto] = useState(false);
 
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [cns, setCns] = useState("");
-  const [dataNasc, setDataNasc] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [genero, setGenero] = useState("");
-  const [imagem, setImagem] = useState("");
-
-  const [senha, setSenha] = useState({
-    novaSenha: "",
-    confirmaSenha: "",
+  const [dados, setDados] = useState({
+    cep: "",
+    logradouro: "",
+    numero: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
+    uf: "",
   });
 
   const abrirModal = (msg) => {
@@ -63,14 +56,7 @@ export default function EditarPerfil() {
     async function carregar() {
       try {
         const dados = await buscarConta(routePacienteId);
-        setNome(dados.nome);
-        setCpf(dados.cpf);
-        setCns(dados.cns);
-        setTelefone(dados.telefone);
-        setEmail(dados.email);
-        setDataNasc(Data.formatarDataBR(dados.dataNasc));
-        setGenero(dados.genero);
-        setImagem(dados.imagem);
+        setDados(dados);
       } catch (e) {
         abrirModal(e.message || "Não foi possível carregar seu perfil.");
       } finally {
@@ -80,22 +66,31 @@ export default function EditarPerfil() {
     carregar();
   }, [routePacienteId]);
 
-  const salvarDados = async () => {
-    if (email && !/\S+@\S+\.\S+/.test(email)) {
-      abrirModal("Digite um e-mail válido.");
-      return;
-    }
-    if (senha.novaSenha) {
-      if (senha.novaSenha.length < 6) {
-        abrirModal("A nova senha deve ter pelo menos 6 caracteres.");
-        return;
-      }
-      if (senha.novaSenha !== senha.confirmaSenha) {
-        abrirModal("As senhas não coincidem.");
-        return;
-      }
-    }
+  const buscarEndereco = async () => {
+    const cepLimpo = (dados.cep || "").replace(/\D/g, "");
+    if (cepLimpo.length !== 8) return;
 
+    try {
+      const url = `https://viacep.com.br/ws/${cepLimpo}/json/`;
+      const response = await axios.get(url);
+      if (response.data?.erro) {
+        abrirModal({ visivel: true, texto: "CEP não encontrado." });
+        return;
+      }
+      setDados((prev) => ({
+        ...prev,
+        logradouro: response.data.logradouro || "",
+        bairro: response.data.bairro || "",
+        cidade: response.data.localidade || "",
+        estado: response.data.estado || "",
+        uf: response.data.uf || "",
+      }));
+    } catch (error) {
+      abrirModal({ visivel: true, texto: "Erro ao buscar dados do CEP." });
+    }
+  };
+
+  const salvarDados = async () => {
     try {
       setSalvando(true);
       const storedId = await AsyncStorage.getItem("@pacienteId");
@@ -106,53 +101,25 @@ export default function EditarPerfil() {
       }
 
       const payload = new FormData();
-
-      if (imagem && !/^https?:\/\//i.test(imagem)) {
-
-        try {
-          if (Platform.OS === "web" && imagem.startsWith("blob:")) {
-            const resp = await fetch(imagem);
-            const blob = await resp.blob();
-            const ext = (blob.type && blob.type.split("/")[1]) || "jpg";
-            const file = new File([blob], `foto.${ext}`, {
-              type: blob.type || "image/jpeg",
-            });
-            payload.append("fotoPaciente", file);
-          } else if (Platform.OS !== "web" && !/^https?:\/\//i.test(imagem)) {
-            const uri =
-              Platform.OS === "ios" ? imagem.replace("file://", "") : imagem;
-            payload.append("fotoPaciente", {
-              uri,
-              type: "image/jpeg",
-              name: "foto.jpg",
-            });
-          }
-        } catch (err) {
-          console.warn("Falha ao preparar a imagem:", err);
-        }
-      }
-
-      payload.append("nomePaciente", nome ?? "");
-      payload.append("telefonePaciente", telefone ?? "");
-      payload.append("emailPaciente", email ?? "");
-      payload.append("generoPaciente", genero ?? "");
-
-      if (senha.novaSenha) {
-        payload.append("senhaPaciente", senha.novaSenha);
-      }
+      payload.append("cepPaciente", dados.cep);
+      payload.append("logradouroPaciente", dados.logradouro);
+      payload.append("numLogradouroPaciente", dados.numero);
+      payload.append("bairroPaciente", dados.bairro);
+      payload.append("cidadePaciente", dados.cidade);
+      payload.append("estadoPaciente", dados.estado);
+      payload.append("ufPaciente", dados.uf);
 
       payload.append("_method", "PUT");
-      console.log("Enviando requisição para o servidor...");
 
       await api.post(`/pacientes/${pacienteId}`, payload);
-      abrirModal("Perfil atualizado com sucesso!");
+      abrirModal("Endereço atualizado com sucesso!");
     } catch (e) {
       const msg =
         e?.response?.data?.message ||
         (e?.response?.data?.errors &&
           Object.values(e.response.data.errors).flat().join("\n")) ||
         e?.response?.data?.error ||
-        "Não foi possível atualizar seu perfil.";
+        "Não foi possível atualizar seu endereço.";
       abrirModal(msg);
     } finally {
       setSalvando(false);
@@ -175,37 +142,28 @@ export default function EditarPerfil() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Pressable onPress={() => setAbrirEscolhaFoto(true)}>
-          {imagem ? (
-            <Image source={{ uri: imagem }} style={styles.imagem} />
-          ) : (
-            <Image
-              source={require("../../../assets/editar-perfil.png")}
-              style={styles.imgPerfil}
-            />
-          )}
-        </Pressable>
-      </View>
+      <Header />
 
       <View style={styles.main}>
-         <Pressable
+        <Pressable
           style={styles.btnVoltar}
           onPress={() => navigation.navigate("Perfil")}
         >
           <Text style={styles.txtBtnVoltar}>Voltar</Text>
         </Pressable>
 
-        <Text style={styles.titulo}>Editar Perfil</Text>
+        <Text style={styles.titulo}>Editar Endereço</Text>
 
         <ScrollView contentContainerStyle={styles.containerInputs}>
-          {/* Nome */}
           <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Nome Completo</Text>
+            <Text style={styles.label}>CEP</Text>
             <TextInput
               style={styles.input}
-              value={nome}
-              onChangeText={setNome}
+              value={dados.cep || ""}
+              onChangeText={(txt) => setDados((p) => ({ ...p, cep: txt }))}
+              onBlur={buscarEndereco}
+              placeholder="CEP"
+              keyboardType="numeric"
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}
@@ -214,47 +172,14 @@ export default function EditarPerfil() {
           </View>
 
           <View style={{ gap: 20 }}>
-            <Text style={styles.label}>CPF</Text>
-            <TextInput style={styles.input} value={cpf} editable={false} />
-          </View>
-
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>CNS</Text>
-            <TextInput style={styles.input} value={cns} editable={false} />
-          </View>
-
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Data de Nascimento</Text>
+            <Text style={styles.label}>Logradouro</Text>
             <TextInput
               style={styles.input}
-              value={Data.maskDateBR(dataNasc)}
-              editable={false}
-            />
-          </View>
-
-          <View style={{ gap: 8 }}>
-            <Text style={styles.label}>Gênero</Text>
-            <Picker
-              selectedValue={genero}
-              style={styles.picker}
-              onValueChange={(v) => setGenero(v)}
-            >
-              <Picker.Item label="Selecione o gênero" value="" />
-              <Picker.Item label="Feminino" value="Feminino" />
-              <Picker.Item label="Masculino" value="Masculino" />
-              <Picker.Item label="Não binário" value="Não binário" />
-              <Picker.Item label="Outro" value="Outro" />
-            </Picker>
-          </View>
-
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Nova Senha</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Nova senha (opcional)"
-              secureTextEntry
-              value={senha.novaSenha}
-              onChangeText={(v) => setSenha((s) => ({ ...s, novaSenha: v }))}
+              value={dados.logradouro || ""}
+              onChangeText={(txt) =>
+                setDados((p) => ({ ...p, logradouro: txt }))
+              }
+              placeholder="Logradouro"
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}
@@ -263,13 +188,13 @@ export default function EditarPerfil() {
           </View>
 
           <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Confirmar Senha</Text>
+            <Text style={styles.label}>Número</Text>
             <TextInput
               style={styles.input}
-              placeholder="Confirmar senha"
-              secureTextEntry
-              value={senha.confirmaSenha}
-              onChangeText={(v) => setSenha((s) => ({ ...s, confirmaSenha: v }))}
+              value={dados.numero || ""}
+              onChangeText={(txt) => setDados((p) => ({ ...p, numero: txt }))}
+              placeholder="Número"
+              keyboardType="number-pad"
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}
@@ -277,15 +202,13 @@ export default function EditarPerfil() {
             />
           </View>
 
-          {/* Email */}
           <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>Bairro</Text>
             <TextInput
               style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
+              value={dados.bairro || ""}
+              onChangeText={(txt) => setDados((p) => ({ ...p, bairro: txt }))}
+              placeholder="Bairro"
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}
@@ -293,14 +216,41 @@ export default function EditarPerfil() {
             />
           </View>
 
-          {/* Telefone */}
           <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Telefone</Text>
+            <Text style={styles.label}>Cidade</Text>
             <TextInput
               style={styles.input}
-              value={telefone}
-              onChangeText={setTelefone}
-              keyboardType="phone-pad"
+              value={dados.cidade || ""}
+              onChangeText={(txt) => setDados((p) => ({ ...p, cidade: txt }))}
+              placeholder="Cidade"
+            />
+            <Image
+              source={require("../../../assets/ferramenta-lapis.png")}
+              style={styles.imgLapis}
+            />
+          </View>
+
+          <View style={{ gap: 20 }}>
+            <Text style={styles.label}>Estado</Text>
+            <TextInput
+              style={styles.input}
+              value={dados.estado || ""}
+              onChangeText={(txt) => setDados((p) => ({ ...p, estado: txt }))}
+              placeholder="Estado"
+            />
+            <Image
+              source={require("../../../assets/ferramenta-lapis.png")}
+              style={styles.imgLapis}
+            />
+          </View>
+
+          <View style={{ gap: 20 }}>
+            <Text style={styles.label}>UF</Text>
+            <TextInput
+              style={styles.input}
+              value={dados.uf || ""}
+              onChangeText={(txt) => setDados((p) => ({ ...p, uf: txt }))}
+              placeholder="UF"
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}
@@ -308,6 +258,7 @@ export default function EditarPerfil() {
             />
           </View>
         </ScrollView>
+          </View>
 
         <View style={styles.containerBtn}>
           <Pressable
@@ -320,7 +271,7 @@ export default function EditarPerfil() {
             </Text>
           </Pressable>
         </View>
-      </View>
+    
 
       <Footer
         setModalSUSVisivel={setModalSUSVisivel}
@@ -350,13 +301,6 @@ export default function EditarPerfil() {
         aoFechar={() => setModalSUSVisivel(false)}
         frenteSrc={require("../../../assets/cartao-frente.png")}
         versoSrc={require("../../../assets/cartao-verso.jpg")}
-      />
-
-      <ModalEscolhaFoto
-        visivel={abrirEscolhaFoto}
-        aoFechar={() => setAbrirEscolhaFoto(false)}
-        setImagem={setImagem}
-        setAbrirEscolhaFoto={setAbrirEscolhaFoto}
       />
     </View>
   );

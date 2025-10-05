@@ -16,6 +16,7 @@ import Exames from "./src/pages/Exames";
 import Historico from "./src/pages/Historico";
 import Perfil from "./src/pages/Perfil";
 import EditarPerfil from "./src/pages/EditarPerfil";
+import EditarEndereco from "./src/pages/EditarEndereco";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ function AppInner() {
       />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
-          initialRouteName="EditarPerfil"
+          initialRouteName="EditarEndereco"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />
@@ -45,6 +46,7 @@ function AppInner() {
           <Stack.Screen name="Historico" component={Historico} />
           <Stack.Screen name="Perfil" component={Perfil} />
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+          <Stack.Screen name="EditarEndereco" component={EditarEndereco} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

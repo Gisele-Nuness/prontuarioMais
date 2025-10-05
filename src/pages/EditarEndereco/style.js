@@ -42,9 +42,9 @@ export default function makeStyles(t) {
       width: 92,
       height: 92,
       borderRadius: 50,
-      tintColor: isDark ? t.colors.primary : t.colors.border,
+      tintColor: isDark? t.colors.primary : t.colors.border,
       borderWidth: 2,
-      borderColor: isDark ? t.colors.primary : t.colors.border,
+      borderColor: isDark? t.colors.primary : t.colors.border,
       alignItems: "center",
       justifyContent: "center",
     },
@@ -55,7 +55,7 @@ export default function makeStyles(t) {
       position: "absolute",
       right: 10,
       bottom: 10,
-      tintColor: t.colors.primary,
+      tintColor: t.colors.primary
     },
 
     main: {

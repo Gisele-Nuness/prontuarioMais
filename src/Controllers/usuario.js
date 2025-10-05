@@ -1,23 +1,15 @@
-// controllers/paciente.js
 import { api } from "../../src/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// pega a origin do baseURL do axios (ex.: http://localhost:8000)
-const getOrigin = () => {
+const getPublicBaseURL = () => {
   const base = api?.defaults?.baseURL || "";
   if (!base) return "";
   try {
-    return new URL(base).origin;
-  } catch {
+    const u = new URL(base);
+    return u.origin;
+  } catch (e) {
     return base.replace(/\/api\/?$/, "").replace(/\/$/, "");
   }
-};
-
-// monta URL pública para arquivo salvo em storage/app/public
-const storageUrl = (path) => {
-  if (!path) return "";
-  if (/^https?:\/\//i.test(path)) return path; // já é URL completa
-  return `${getOrigin()}/storage/${path}`.replace(/([^:]\/)\/+/g, "$1");
 };
 
 /**
@@ -30,6 +22,14 @@ export async function buscarConta(pacienteIdParam) {
   if (!pacienteId) throw new Error("Sessão expirada. Faça login novamente.");
 
   const { data } = await api.get(`/pacientes/${pacienteId}`);
+
+  const foto = data?.fotoPaciente || "";
+  let imagem = "";
+  if (foto) {
+    const isHttp = /^https?:\/\//i.test(foto);
+    const publicBase = getPublicBaseURL();
+    imagem = isHttp ? foto : `${publicBase}/storage/${foto}`;
+  }
 
   return {
     id: data?.idPaciente,
@@ -47,7 +47,7 @@ export async function buscarConta(pacienteIdParam) {
     estado: data?.estadoPaciente || "",
     uf: data?.ufPaciente || "",
     email: data?.emailPaciente || "",
-    imagem: storageUrl(data?.fotoPaciente || ""), // <- simples e direto
+    imagem,
   };
 }
 
@@ -60,7 +60,11 @@ export async function excluirConta(pacienteIdParam) {
   if (!pacienteId) throw new Error("Sessão expirada. Faça login novamente.");
 
   const resp = await api.delete(`/pacientes/${pacienteId}`);
-  await AsyncStorage.multiRemove(["@pacienteId", "@pacienteNome", "@authToken"]);
+  await AsyncStorage.multiRemove([
+    "@pacienteId",
+    "@pacienteNome",
+    "@authToken",
+  ]);
 
   return {
     ok: true,

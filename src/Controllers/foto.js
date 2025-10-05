@@ -40,13 +40,14 @@ const escolherDaGaleria = async (setImagem, setAbrirEscolhaFoto) => {
 
   const resultado = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    allowsEditing: true,
+    allowsEditing: false,
     quality: 1,
-    aspect: [4, 3],
+    //aspect: [4, 3],
     base64: false,
   });
 
   if (!resultado.canceled) {
+    console.log("URI DO TESTE SEM EDIÇÃO:", resultado.assets[0].uri);
     setImagem(resultado.assets[0].uri);
     setAbrirEscolhaFoto(false);
   }

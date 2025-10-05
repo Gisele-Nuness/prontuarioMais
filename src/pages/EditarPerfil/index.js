@@ -11,6 +11,7 @@ import {
   Modal,
   Platform,
   ActivityIndicator,
+
 } from "react-native";
 import makeStyles from "./style";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
@@ -22,6 +23,8 @@ import { ModalEscolhaFoto } from "../../Controllers/foto";
 import { api } from "../../services/api";
 import { buscarConta } from "../../Controllers/usuario";
 import { Picker } from "@react-native-picker/picker";
+import Data from "../../Controllers/data";
+
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
@@ -44,7 +47,7 @@ export default function EditarPerfil() {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [genero, setGenero] = useState("");
-  const [imagem, setImagem] = useState(null);
+  const [imagem, setImagem] = useState("");
 
   const [senha, setSenha] = useState({
     novaSenha: "",
@@ -65,7 +68,7 @@ export default function EditarPerfil() {
         setCns(dados.cns);
         setTelefone(dados.telefone);
         setEmail(dados.email);
-        setDataNasc(dados.dataNasc);
+        setDataNasc(Data.formatarDataBR(dados.dataNasc));
         setGenero(dados.genero);
         setImagem(dados.imagem);
       } catch (e) {
@@ -103,16 +106,12 @@ export default function EditarPerfil() {
       }
 
       const payload = new FormData();
-      payload.append("nomePaciente", nome ?? "");
-      payload.append("telefonePaciente", telefone ?? "");
-      payload.append("emailPaciente", email ?? "");
-      payload.append("generoPaciente", genero ?? "");
+      console.log("URI da imagem no estado:", imagem);
 
-      if (senha.novaSenha) {
-        payload.append("senhaPaciente", senha.novaSenha);
-      }
-
-      if (imagem) {
+      if (imagem && !/^https?:\/\//i.test(imagem)) {
+        console.log(
+          "CONDIÇÃO DE IMAGEM VÁLIDA: Entrou no IF para anexar a imagem."
+        );
         try {
           if (Platform.OS === "web" && imagem.startsWith("blob:")) {
             const resp = await fetch(imagem);
@@ -136,14 +135,19 @@ export default function EditarPerfil() {
         }
       }
 
+      payload.append("nomePaciente", nome ?? "");
+      payload.append("telefonePaciente", telefone ?? "");
+      payload.append("emailPaciente", email ?? "");
+      payload.append("generoPaciente", genero ?? "");
+
+      if (senha.novaSenha) {
+        payload.append("senhaPaciente", senha.novaSenha);
+      }
+
       payload.append("_method", "PUT");
+      console.log("Enviando requisição para o servidor...");
 
-      const cfg =
-        Platform.OS === "web"
-          ? { headers: {} }
-          : { headers: { "Content-Type": "multipart/form-data" } };
-
-      await api.post(`/pacientes/${pacienteId}`, payload, cfg);
+      await api.post(`/pacientes/${pacienteId}`, payload);
       abrirModal("Perfil atualizado com sucesso!");
     } catch (e) {
       const msg =
@@ -188,7 +192,7 @@ export default function EditarPerfil() {
       </View>
 
       <ScrollView style={styles.main}>
-        <Pressable
+         <Pressable
           style={styles.btnVoltar}
           onPress={() => navigation.navigate("Perfil")}
         >
@@ -224,7 +228,11 @@ export default function EditarPerfil() {
 
           <View style={{ gap: 20 }}>
             <Text style={styles.label}>Data de Nascimento</Text>
-            <TextInput style={styles.input} value={dataNasc} editable={false} />
+            <TextInput
+              style={styles.input}
+              value={Data.maskDateBR(dataNasc)}
+              editable={false}
+            />
           </View>
 
           <View style={{ gap: 8 }}>
@@ -249,7 +257,7 @@ export default function EditarPerfil() {
               placeholder="Nova senha (opcional)"
               secureTextEntry
               value={senha.novaSenha}
-              onChangeText={setSenha}
+              onChangeText={(v) => setSenha((s) => ({ ...s, novaSenha: v }))}
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}
@@ -264,7 +272,7 @@ export default function EditarPerfil() {
               placeholder="Confirmar senha"
               secureTextEntry
               value={senha.confirmaSenha}
-              onChangeText={setSenha}
+              onChangeText={(v) => setSenha((s) => ({ ...s, confirmaSenha: v }))}
             />
             <Image
               source={require("../../../assets/ferramenta-lapis.png")}

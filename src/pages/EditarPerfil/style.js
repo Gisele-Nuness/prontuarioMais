@@ -25,6 +25,7 @@ export default function makeStyles(t) {
       backgroundColor: isDark ? t.colors.surface : t.colors.primary,
       borderBottomWidth: 1,
       borderBottomColor: t.colors.border,
+      paddingVertical: 80,
     },
 
     imagem: {
@@ -36,6 +37,7 @@ export default function makeStyles(t) {
       backgroundColor: t.colors.surface,
       alignItems: "center",
       justifyContent: "center",
+      marginTop: 40
     },
 
     imgPerfil: {
@@ -197,5 +199,48 @@ export default function makeStyles(t) {
       textAlign: "center",
       color: t.colors.text,
     },
+
+    pickerText: {
+      fontSize: 16,
+      color: t.colors.text,
+    },
+
+      overlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  pickerContent: {
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+
+  },
+
+    webPickerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  webPickerOption: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  webPickerOptionSelected: {
+    backgroundColor: t.colors.primary,
+    color: t.colors.background,
+  },
+  webPickerOptionText: {
+    fontSize: 16,
+    color: '#000',
+    textAlign: 'center',
+  },
+ 
   });
 }

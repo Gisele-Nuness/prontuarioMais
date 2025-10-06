@@ -5,7 +5,6 @@ export default function makeStyles(t) {
 
   return StyleSheet.create({
     header: {
-      height: 80,
       width: "100%",
       backgroundColor: isDark ? t.colors.surface : t.colors.primary,
       flexDirection: "row",
@@ -18,45 +17,41 @@ export default function makeStyles(t) {
       shadowRadius: 6,
       shadowOffset: { width: 0, height: 4 },
       elevation: 2,
-      paddingVertical: 60,
+      paddingVertical: 20,
+      paddingHorizontal: 15,
     },
 
     containerPerfil: {
-      width: 200,
       alignItems: "center",
       display: "flex",
       flexDirection: "row",
-      marginLeft: 10,
-      gap: 10
+      gap: 10,
+      flex: 1,
     },
 
     nome: {
-      
       color: isDark ? t.colors.text : t.colors.background,
       fontSize: 16,
       fontWeight: "bold",
-      width: 120,
-      textTransform: "capitalize", 
+      flex: 1,
     },
 
     containerIcons: {
-      width: 100,
       flexDirection: "row",
       gap: 20,
       alignItems: "center",
       justifyContent: "flex-end",
-      right: 25,
     },
 
     iconPerfil: {
-      width: 80,
-      height: 80,
-      borderRadius: 100,
+      width: 72,
+      height: 72,
+      borderRadius: 50,
     },
 
     icons: {
-      width: 20,
-      height: 20,
+      width: 24,
+      height: 24,
       tintColor: isDark ? t.colors.text : t.colors.background,
     },
   });

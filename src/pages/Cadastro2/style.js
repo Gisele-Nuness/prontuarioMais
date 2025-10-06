@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
 
   header: {
-    height: 30,
+    height: 50,
     width: "100%",
     justifyContent: "space-between",
     flexDirection: "row",

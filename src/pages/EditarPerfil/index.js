@@ -1,4 +1,3 @@
-// src/Screens/EditarPerfil/index.jsx
 import React, { useEffect, useState } from "react";
 import {
   Text,
@@ -11,7 +10,7 @@ import {
   Modal,
   Platform,
   ActivityIndicator,
-
+  StyleSheet, // ADICIONADO
 } from "react-native";
 import makeStyles from "./style";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
@@ -24,7 +23,6 @@ import { api } from "../../services/api";
 import { buscarConta } from "../../Controllers/usuario";
 import { Picker } from "@react-native-picker/picker";
 import Data from "../../Controllers/data";
-
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
@@ -39,6 +37,9 @@ export default function EditarPerfil() {
   const [modalMessage, setModalMessage] = useState("");
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
   const [abrirEscolhaFoto, setAbrirEscolhaFoto] = useState(false);
+
+  // ADICIONADO: Estado para controlar o modal do gênero
+  const [generoModalVisivel, setGeneroModalVisivel] = useState(false);
 
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -108,7 +109,6 @@ export default function EditarPerfil() {
       const payload = new FormData();
 
       if (imagem && !/^https?:\/\//i.test(imagem)) {
-
         try {
           if (Platform.OS === "web" && imagem.startsWith("blob:")) {
             const resp = await fetch(imagem);
@@ -142,7 +142,6 @@ export default function EditarPerfil() {
       }
 
       payload.append("_method", "PUT");
-      console.log("Enviando requisição para o servidor...");
 
       await api.post(`/pacientes/${pacienteId}`, payload);
       abrirModal("Perfil atualizado com sucesso!");
@@ -168,7 +167,7 @@ export default function EditarPerfil() {
         ]}
       >
         <ActivityIndicator />
-        <Text style={styles.carregando}>Carregando...</Text>
+        <Text style={{ marginTop: 8 }}>Carregando...</Text>
       </View>
     );
   }
@@ -188,8 +187,8 @@ export default function EditarPerfil() {
         </Pressable>
       </View>
 
-      <View style={styles.main}>
-         <Pressable
+      <ScrollView contentContainerStyle={styles.containerInputs}>
+        <Pressable
           style={styles.btnVoltar}
           onPress={() => navigation.navigate("Perfil")}
         >
@@ -198,128 +197,112 @@ export default function EditarPerfil() {
 
         <Text style={styles.titulo}>Editar Perfil</Text>
 
-        <ScrollView contentContainerStyle={styles.containerInputs}>
-          {/* Nome */}
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Nome Completo</Text>
-            <TextInput
-              style={styles.input}
-              value={nome}
-              onChangeText={setNome}
-            />
-            <Image
-              source={require("../../../assets/ferramenta-lapis.png")}
-              style={styles.imgLapis}
-            />
-          </View>
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>Nome Completo</Text>
+          <TextInput style={styles.input} value={nome} onChangeText={setNome} />
+          <Image
+            source={require("../../../assets/ferramenta-lapis.png")}
+            style={styles.imgLapis}
+          />
+        </View>
 
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>CPF</Text>
-            <TextInput style={styles.input} value={cpf} editable={false} />
-          </View>
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>CPF</Text>
+          <TextInput style={styles.input} value={cpf} editable={false} />
+        </View>
 
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>CNS</Text>
-            <TextInput style={styles.input} value={cns} editable={false} />
-          </View>
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>CNS</Text>
+          <TextInput style={styles.input} value={cns} editable={false} />
+        </View>
 
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Data de Nascimento</Text>
-            <TextInput
-              style={styles.input}
-              value={Data.maskDateBR(dataNasc)}
-              editable={false}
-            />
-          </View>
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>Data de Nascimento</Text>
+          <TextInput
+            style={styles.input}
+            value={Data.maskDateBR(dataNasc)}
+            editable={false}
+          />
+        </View>
 
-          <View style={{ gap: 8 }}>
-            <Text style={styles.label}>Gênero</Text>
-            <Picker
-              selectedValue={genero}
-              style={styles.picker}
-              onValueChange={(v) => setGenero(v)}
-            >
-              <Picker.Item label="Selecione o gênero" value="" />
-              <Picker.Item label="Feminino" value="Feminino" />
-              <Picker.Item label="Masculino" value="Masculino" />
-              <Picker.Item label="Não binário" value="Não binário" />
-              <Picker.Item label="Outro" value="Outro" />
-            </Picker>
-          </View>
-
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Nova Senha</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Nova senha (opcional)"
-              secureTextEntry
-              value={senha.novaSenha}
-              onChangeText={(v) => setSenha((s) => ({ ...s, novaSenha: v }))}
-            />
-            <Image
-              source={require("../../../assets/ferramenta-lapis.png")}
-              style={styles.imgLapis}
-            />
-          </View>
-
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Confirmar Senha</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirmar senha"
-              secureTextEntry
-              value={senha.confirmaSenha}
-              onChangeText={(v) => setSenha((s) => ({ ...s, confirmaSenha: v }))}
-            />
-            <Image
-              source={require("../../../assets/ferramenta-lapis.png")}
-              style={styles.imgLapis}
-            />
-          </View>
-
-          {/* Email */}
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
-            <Image
-              source={require("../../../assets/ferramenta-lapis.png")}
-              style={styles.imgLapis}
-            />
-          </View>
-
-          {/* Telefone */}
-          <View style={{ gap: 20 }}>
-            <Text style={styles.label}>Telefone</Text>
-            <TextInput
-              style={styles.input}
-              value={telefone}
-              onChangeText={setTelefone}
-              keyboardType="phone-pad"
-            />
-            <Image
-              source={require("../../../assets/ferramenta-lapis.png")}
-              style={styles.imgLapis}
-            />
-          </View>
-        </ScrollView>
-
-        <View style={styles.containerBtn}>
+        <View style={{ gap: 25 }}>
+          <Text style={styles.label}>Gênero</Text>
           <Pressable
-            style={styles.btn}
-            onPress={salvarDados}
-            disabled={salvando}
+            style={styles.input}
+            onPress={() => setGeneroModalVisivel(true)}
           >
-            <Text style={styles.txtBtn}>
-              {salvando ? "Salvando..." : "Salvar"}
+            <Text style={styles.pickerText}>
+              {genero || "Selecione o gênero"}
             </Text>
           </Pressable>
         </View>
+
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>Nova Senha</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Nova senha (opcional)"
+            secureTextEntry
+            value={senha.novaSenha}
+            onChangeText={(v) => setSenha((s) => ({ ...s, novaSenha: v }))}
+          />
+          <Image
+            source={require("../../../assets/ferramenta-lapis.png")}
+            style={styles.imgLapis}
+          />
+        </View>
+
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>Confirmar Senha</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirmar senha"
+            secureTextEntry
+            value={senha.confirmaSenha}
+            onChangeText={(v) => setSenha((s) => ({ ...s, confirmaSenha: v }))}
+          />
+          <Image
+            source={require("../../../assets/ferramenta-lapis.png")}
+            style={styles.imgLapis}
+          />
+        </View>
+
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <Image
+            source={require("../../../assets/ferramenta-lapis.png")}
+            style={styles.imgLapis}
+          />
+        </View>
+
+        <View style={{ gap: 20 }}>
+          <Text style={styles.label}>Telefone</Text>
+          <TextInput
+            style={styles.input}
+            value={telefone}
+            onChangeText={setTelefone}
+            keyboardType="phone-pad"
+          />
+          <Image
+            source={require("../../../assets/ferramenta-lapis.png")}
+            style={styles.imgLapis}
+          />
+        </View>
+      </ScrollView>
+
+      <View style={styles.containerBtn}>
+        <Pressable style={styles.btn} onPress={salvarDados} disabled={salvando}>
+          <Text style={styles.txtBtn}>
+            {salvando ? "Salvando..." : "Salvar"}
+          </Text>
+        </Pressable>
       </View>
 
       <Footer
@@ -343,6 +326,87 @@ export default function EditarPerfil() {
             />
           </View>
         </View>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        visible={generoModalVisivel}
+        animationType="slide"
+        onRequestClose={() => setGeneroModalVisivel(false)}
+      >
+        <Pressable
+          style={styles.overlay}
+          onPress={() => setGeneroModalVisivel(false)}
+        >
+          <View style={styles.pickerContent}>
+
+            {Platform.OS === "web" ? (
+              <View>
+                <Text style={styles.webPickerTitle}>
+                  Selecione o gênero
+                </Text>
+                {["Feminino", "Masculino", "Não binário", "Outro"].map(
+                  (item) => (
+                    <Pressable
+                      key={item}
+                      style={[
+                        styles.webPickerOption,
+                        genero === item && styles.webPickerOptionSelected,
+                      ]}
+                      onPress={() => {
+                        setGenero(item);
+                        setGeneroModalVisivel(false);
+                      }}
+                    >
+                      <Text style={styles.webPickerOptionText}>
+                        {item}
+                      </Text>
+                    </Pressable>
+                  )
+                )}
+              </View>
+            ) : (
+      
+              <>
+                <Picker
+                  selectedValue={genero}
+                  onValueChange={(itemValue) => {
+                    if (itemValue) {
+                      setGenero(itemValue);
+                    }
+                  }}
+                  style={{ color: "#000" }}
+                >
+                  <Picker.Item
+                    label="Selecione o gênero"
+                    value=""
+                    color="#000000"
+                  />
+                  <Picker.Item
+                    label="Feminino"
+                    value="Feminino"
+                    color="#000000"
+                  />
+                  <Picker.Item
+                    label="Masculino"
+                    value="Masculino"
+                    color="#000000"
+                  />
+                  <Picker.Item
+                    label="Não binário"
+                    value="Não binário"
+                    color="#000000"
+                  />
+                  <Picker.Item label="Outro" value="Outro" color="#000000" />
+                </Picker>
+                <Button
+                  title="Confirmar"
+                  onPress={() => setGeneroModalVisivel(false)}
+                />
+              </>
+            )}
+          </View>
+        </Pressable>
       </Modal>
 
       <CartaoSUS

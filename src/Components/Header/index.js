@@ -2,13 +2,13 @@ import React, { useState, useCallback } from "react";
 import { View, Image, Pressable, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import makeStyles from "./style";
-import { useRoute, useFocusEffect  } from "@react-navigation/native";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
 import { buscarConta } from "../../Controllers/usuario";
 
 export default function Header() {
   const [imagem, setImagem] = useState(null);
-  const [nome, setNome] = useState("")
+  const [nome, setNome] = useState("");
   const styles = useThemedStyles(makeStyles);
   const route = useRoute();
 
@@ -22,12 +22,11 @@ export default function Header() {
           setNome(dados.nome);
           setImagem(dados.imagem);
         } catch (e) {
-          setModal(true);
-          setModalMessage("Erro ao carregar dados do usuário.");
+          console.warn("Header/buscarConta falhou:", e?.message || e);
         }
       }
       carregar();
-    }, [])
+    }, [routePacienteId])
   );
 
   return (

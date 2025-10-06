@@ -21,16 +21,15 @@ export default function makeStyles(t) {
       alignItems: "center",
     },
 
-    searchWrapper: {
+    bannerPaciente: {
       width: "100%",
-      height: 50,
-      backgroundColor: t.colors.primarySoft,
-      borderRadius: 30,
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 14,
-      marginBottom: 50,
-      marginTop: 10,
+      height: 120,
+      marginBottom: 20,
+
+    },
+    bannerPacienteImage: {
+      width: "100%",
+      height: 100,
     },
 
     buscar: {

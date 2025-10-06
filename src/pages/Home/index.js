@@ -32,15 +32,10 @@ export default function Home() {
       <Header />
 
       <View style={styles.main}>
-        <View style={styles.searchWrapper}>
+        <View style={styles.bannerPaciente}>
           <Image
-            source={require("../../../assets/pesquisar.png")}
-            style={styles.iconBuscar}
-          />
-          <TextInput
-            style={styles.buscar}
-            placeholder="Pesquisar"
-            placeholderTextColor="#2A2A2A99"
+            source={require("../../../assets/container-paciente.png")}
+            style={styles.bannerPacienteImage}
           />
         </View>
 

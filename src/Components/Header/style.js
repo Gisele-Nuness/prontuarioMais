@@ -18,10 +18,11 @@ export default function makeStyles(t) {
       shadowRadius: 6,
       shadowOffset: { width: 0, height: 4 },
       elevation: 2,
+      paddingVertical: 60,
     },
 
     containerPerfil: {
-      width: 180,
+      width: 200,
       alignItems: "center",
       display: "flex",
       flexDirection: "row",
@@ -31,7 +32,11 @@ export default function makeStyles(t) {
 
     nome: {
       
-      color: isDark ? t.colors.text : t.colors.background 
+      color: isDark ? t.colors.text : t.colors.background,
+      fontSize: 16,
+      fontWeight: "bold",
+      width: 120,
+      textTransform: "capitalize", 
     },
 
     containerIcons: {
@@ -44,8 +49,8 @@ export default function makeStyles(t) {
     },
 
     iconPerfil: {
-      width: 62,
-      height: 62,
+      width: 80,
+      height: 80,
       borderRadius: 100,
     },
 

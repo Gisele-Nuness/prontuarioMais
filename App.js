@@ -1,6 +1,10 @@
 import React from "react";
 import { StatusBar } from "react-native";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { ThemeProvider, useTheme } from "./src/Theme/ThemeProvider";
@@ -27,10 +31,7 @@ function AppInner() {
 
   return (
     <>
-      <StatusBar
-        barStyle={theme.name === "dark" ? "light-content" : "dark-content"}
-        backgroundColor={theme.colors.background}
-      />
+      <StatusBar hidden />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
           initialRouteName="Alergias"

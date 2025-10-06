@@ -7,9 +7,9 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import makeStyles from './style';
-import { useThemedStyles } from '../../Theme/useThemedStyles';
-import { useNavigation } from "@react-navigation/native";
+import makeStyles from "./style";
+import { useThemedStyles } from "../../Theme/useThemedStyles";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import CartaoSUS from "../../Components/CartaoSUS";
@@ -19,6 +19,9 @@ export default function Historico() {
   const navigation = useNavigation();
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
   const styles = useThemedStyles(makeStyles);
+  const { colors, dark } = useTheme();
+  const placeholderColor =
+    colors?.placeholder ?? (dark ? "rgba(255,255,255,0.6)" : "#2A2A2A99");
 
   const itensHistorico = [
     {
@@ -113,14 +116,14 @@ export default function Historico() {
           <TextInput
             style={styles.buscar}
             placeholder="Buscar"
-            placeholderTextColor="#2A2A2A99"
+            placeholderTextColor={placeholderColor}
             value={textoPesquisa}
             onChangeText={setTextoPesquisa}
             returnKeyType="search"
           />
           <Pressable onPress={() => {}}>
             <Image
-              source={require("../../../assets/filtro.png")}
+              source={require("../../../assets/prontuario.png")}
               style={styles.iconBuscar}
             />
           </Pressable>
@@ -148,7 +151,10 @@ export default function Historico() {
         </View>
       </View>
 
-      <Footer setModalSUSVisivel={setModalSUSVisivel} susSelected={modalSUSVisivel} />
+      <Footer
+        setModalSUSVisivel={setModalSUSVisivel}
+        susSelected={modalSUSVisivel}
+      />
 
       <CartaoSUS
         visivel={modalSUSVisivel}

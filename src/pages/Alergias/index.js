@@ -14,7 +14,7 @@ import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import CartaoSUS from "../../Components/CartaoSUS";
 
-export default function Exames() {
+export default function Alergias() {
   const [textoPesquisa, setTextoPesquisa] = useState("");
   const navigation = useNavigation();
   const styles = useThemedStyles(makeStyles);
@@ -24,83 +24,75 @@ export default function Exames() {
 
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
-  const itensExames = [
+  const itensAlergias = [
     {
       id: "1",
-      title: "Hemograma",
-      dateISO: "2025-04-09T11:30:00-03:00",
-      weekday: "Sexta-feira",
+      name: "Alergia a Amendoim",
+      severity: "Alta",
+      type: "Alimentar",
     },
     {
       id: "2",
-      title: "Alergeno (geral)",
-      dateISO: "2025-04-02T10:30:00-03:00",
-      weekday: "Sexta-feira",
+      name: "Alergia a Camarão",
+      severity: "Média",
+      type: "Alimentar",
     },
     {
       id: "3",
-      title: "Beta HCG",
-      dateISO: "2025-03-31T09:30:00-03:00",
-      weekday: "Sábado",
+      name: "Rinite Alérgica (Pólen)",
+      severity: "Baixa",
+      type: "Respiratória",
     },
     {
       id: "4",
-      title: "Urina - Tipo 1",
-      dateISO: "2025-02-24T11:30:00-03:00",
-      weekday: "Segunda-feira",
+      name: "Alergia à Poeira",
+      severity: "Média",
+      type: "Respiratória",
     },
     {
       id: "5",
-      title: "Vitamina B12",
-      dateISO: "2025-01-29T11:30:00-03:00",
-      weekday: "Sexta-feira",
+      name: "Alergia a Penicilina",
+      severity: "Alta",
+      type: "Medicamentosa",
     },
-    {
-      id: "6",
-      title: "Colesterol total",
-      dateISO: "2024-11-05T09:00:00-03:00",
-      weekday: "Terça-feira",
-    },
+    { id: "6", name: "Alergia a Látex", severity: "Média", type: "Contato" },
     {
       id: "7",
-      title: "Vitamina B1",
-      dateISO: "2024-09-03T12:30:00-03:00",
-      weekday: "Terça-feira",
-    },
-    {
-      id: "8",
-      title: "Check-up geral",
-      dateISO: "2024-05-10T11:30:00-03:00",
-      weekday: "Sexta-feira",
+      name: "Intolerância à Lactose",
+      severity: "Baixa",
+      type: "Alimentar",
     },
   ];
 
-  function formatarHora(dateISO) {
-    const data = new Date(dateISO);
-    const horas = String(data.getHours()).padStart(2, "0");
-    const minutos = String(data.getMinutes()).padStart(2, "0");
-    return `${horas}:${minutos}`;
-  }
-
-  const CartaoExame = ({ exame, onPress }) => (
+  const CartaoAlergia = ({ alergia, onPress }) => (
     <Pressable style={styles.historico} onPress={onPress}>
+      <View
+        style={[
+          styles.severityIndicator,
+          alergia.severity === "Alta" && styles.severityHigh,
+          alergia.severity === "Média" && styles.severityMedium,
+          alergia.severity === "Baixa" && styles.severityLow,
+        ]}
+      />
       <View style={styles.textos}>
-        <Text style={styles.titleLegend}>{exame.title}</Text>
+        <Text style={styles.titleLegend}>{alergia.name}</Text>
         <Text style={styles.legendText}>
-          {exame.weekday}, {new Date(exame.dateISO).toLocaleDateString("pt-BR")}{" "}
-          às {formatarHora(exame.dateISO)}
+          Tipo: {alergia.type}, Severidade: {alergia.severity}
         </Text>
       </View>
     </Pressable>
   );
 
-  const examesFiltrados = useMemo(() => {
+  const alergiasFiltradas = useMemo(() => {
     const termoNormalizado = textoPesquisa.trim().toLowerCase();
 
-    if (!termoNormalizado) return itensExames;
+    if (!termoNormalizado) return itensAlergias;
 
-    return itensExames.filter((exame) =>
-      exame.title.toLowerCase().includes(termoNormalizado)
+    return itensAlergias.filter(
+      (alergia) =>
+        alergia.name.toLowerCase().includes(termoNormalizado) ||
+        alergia.type.toLowerCase().includes(termoNormalizado) ||
+        alergia.severity.toLowerCase().includes(termoNormalizado)
     );
   }, [textoPesquisa]);
 
@@ -116,7 +108,7 @@ export default function Exames() {
           />
           <TextInput
             style={styles.buscar}
-            placeholder="Buscar exames"
+            placeholder="Buscar alergias"
             placeholderTextColor={placeholderColor}
             value={textoPesquisa}
             onChangeText={setTextoPesquisa}
@@ -124,7 +116,7 @@ export default function Exames() {
           />
           <Pressable onPress={() => {}}>
             <Image
-              source={require("../../../assets/exames.png")}
+              source={require("../../../assets/alergias.png")}
               style={styles.iconBuscar}
             />
           </Pressable>
@@ -132,14 +124,14 @@ export default function Exames() {
 
         <View style={styles.cards}>
           <View style={{ marginBottom: 10 }}>
-            <Text style={styles.titleText}>EXAMES</Text>
+            <Text style={styles.titleText}>Minhas Alergias</Text>
           </View>
 
           <FlatList
-            data={examesFiltrados}
-            keyExtractor={(exame) => exame.id}
+            data={alergiasFiltradas}
+            keyExtractor={(alergia) => alergia.id}
             renderItem={({ item }) => (
-              <CartaoExame exame={item} onPress={() => {}} />
+              <CartaoAlergia alergia={item} onPress={() => {}} />
             )}
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             showsVerticalScrollIndicator={false}

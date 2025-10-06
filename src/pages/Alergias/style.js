@@ -3,6 +3,9 @@ import { StyleSheet } from "react-native";
 
 export default function makeStyles(t) {
   const isDark = t.name === "dark";
+    const HIGH_SEVERITY = "#FF4C4C";
+    const MEDIUM_SEVERITY = "#FFA500";
+    const LOW_SEVERITY = "#4CAF50";
 
   return StyleSheet.create({
     container: {
@@ -11,7 +14,6 @@ export default function makeStyles(t) {
       alignItems: "stretch",
       justifyContent: "flex-start",
       flexDirection: "column",
-      
     },
 
     main: {
@@ -46,6 +48,23 @@ export default function makeStyles(t) {
       height: 40,
       marginRight: 8,
       tintColor: isDark ? t.colors.text : t.colors.primary,
+      color: isDark ? t.colors.text : t.colors.primary,
+    },
+
+    severityIndicator: {
+      width: 8,
+      height: "100%",
+      borderRadius: 4,
+      
+    },
+    severityHigh: {
+      backgroundColor: HIGH_SEVERITY,
+    },
+    severityMedium: {
+      backgroundColor: MEDIUM_SEVERITY,
+    },
+    severityLow: {
+      backgroundColor: LOW_SEVERITY,
     },
 
     cards: {
@@ -63,7 +82,7 @@ export default function makeStyles(t) {
     historico: {
       width: "100%",
       flexDirection: "row",
-      justifyContent: "space-between",
+      gap: 12,
       alignItems: "center",
       backgroundColor: t.colors.surface,
       borderRadius: 18,
@@ -73,7 +92,7 @@ export default function makeStyles(t) {
       borderWidth: 1,
       borderColor: t.colors.border,
       shadowColor: "#000",
-      shadowOpacity: 0.10,
+      shadowOpacity: 0.1,
       shadowRadius: 8,
       shadowOffset: { width: 0, height: 7 },
       elevation: 2,
@@ -87,7 +106,7 @@ export default function makeStyles(t) {
       color: t.colors.primary,
       fontWeight: "700",
       letterSpacing: 0.2,
-      fontSize: 18,
+      fontSize: 20,
       left: 5,
     },
 

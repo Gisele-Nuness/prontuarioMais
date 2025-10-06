@@ -72,8 +72,6 @@ export default function makeStyles(t) {
       minHeight: 70,
       borderWidth: 1,
       borderColor: t.colors.border,
-
-      // sombras
       shadowColor: "#000",
       shadowOpacity: 0.10,
       shadowRadius: 8,
@@ -89,7 +87,7 @@ export default function makeStyles(t) {
       color: t.colors.primary,
       fontWeight: "700",
       letterSpacing: 0.2,
-      fontSize: 16,
+      fontSize: 18,
       left: 5,
     },
 

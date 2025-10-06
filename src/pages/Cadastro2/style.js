@@ -83,9 +83,7 @@ export default StyleSheet.create({
     color: "#7b7b7bff",
     fontSize: 18,
     fontWeight: "bold",
-    alignItems: "flex-start",
-    left: 45,
-  
+    alignItems: "flex-start",    
   },
 
   containerInputs: {
@@ -95,6 +93,10 @@ export default StyleSheet.create({
     padding: 20,
     gap: 40,
     marginTop: 50,
+  },
+
+  viewsInputs: {
+    gap: 40
   },
 
   input: {

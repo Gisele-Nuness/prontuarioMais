@@ -188,8 +188,10 @@ export default function Cadastro2() {
           <Text style={styles.txt1}>
             {step === 1 ? "Cadastre seu endereço:" : "Crie suas credenciais:"}
           </Text>
+
           {step === 1 ? (
-            <>
+            
+            <View key="step1" style={styles.viewsInputs}>
               <TextInput
                 style={styles.input}
                 placeholder="CEP (8 dígitos)"
@@ -224,46 +226,56 @@ export default function Cadastro2() {
                 value={cidade}
                 onChangeText={setCidade}
               />
-
               <TextInput
                 style={styles.input}
                 placeholder="Estado"
                 value={estado}
                 onChangeText={setEstado}
               />
-
               <TextInput
                 style={styles.input}
                 placeholder="UF"
                 value={uf}
                 onChangeText={setUf}
               />
-            </>
+            </View>
           ) : (
-            <>
+            
+            <View key="step2" style={styles.viewsInputs}>
               <TextInput
+                key="emailField"
                 style={styles.input}
                 value={email}
                 onChangeText={setEmail}
                 placeholder="Digite seu e-mail"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="next"
               />
               <TextInput
+                key="senhaField"
                 style={styles.input}
                 value={senha}
                 onChangeText={setSenha}
                 placeholder="Digite sua senha"
                 secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="next"
               />
               <TextInput
+                key="confirmaSenhaField"
                 style={styles.input}
                 value={confirmaSenha}
                 onChangeText={setConfirmaSenha}
                 placeholder="Confirme sua senha"
                 secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="done"
               />
-            </>
+            </View>
           )}
         </ScrollView>
 

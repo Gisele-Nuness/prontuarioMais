@@ -1,12 +1,11 @@
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Image, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform, ScrollView, TextInput } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { TextInput } from "react-native";
 import ModalPadrao from "../../Components/Modal";
 import { api } from "../../services/api";
 
-export default function Login() {
+export default function Cadastro() {
   const navigation = useNavigation();
 
   const [cns, setCns] = useState("");
@@ -18,6 +17,8 @@ export default function Login() {
   const soNumeros = (v) => (v || "").replace(/\D/g, "");
 
   const procurarCadastro = async () => {
+    Keyboard.dismiss();
+
     const cpfLimpo = soNumeros(cpf);
     const cnsLimpo = soNumeros(cns);
 
@@ -97,88 +98,106 @@ export default function Login() {
       console.error(e);
       setModal(true);
       setModalMessage("Erro ao buscar paciente. Tente novamente.");
-    } finally {
-      // setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.containerHora}>
-          <Text style={styles.hora}>14:44</Text>
-        </View>
-
-        <View style={styles.containerIcons}>
-          <Image
-            source={require("../../../assets/sinal-de-rede.png")}
-            style={styles.icons}
-          />
-
-          <Image
-            source={require("../../../assets/sinal-wifi.png")}
-            style={styles.icons}
-          />
-
-          <Image
-            source={require("../../../assets/barra-de-bateria.png")}
-            style={styles.icons}
-          />
-        </View>
-      </View>
-
-      <View style={styles.main}>
-        <Pressable
-          style={styles.btnVoltar}
-          onPress={() => navigation.navigate("BemVindo")}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.txtBtnVoltar}>Voltar</Text>
-        </Pressable>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <View style={styles.containerHora}>
+                <Text style={styles.hora}>14:44</Text>
+              </View>
 
-        <Image
-          source={require("../../../assets/azul-logo.png")}
-          style={styles.logo}
-        />
+              <View style={styles.containerIcons}>
+                <Image
+                  source={require("../../../assets/sinal-de-rede.png")}
+                  style={styles.icons}
+                />
 
-        <Text style={styles.txt}>Primeira vez por aqui?</Text>
+                <Image
+                  source={require("../../../assets/sinal-wifi.png")}
+                  style={styles.icons}
+                />
 
-        <Text style={styles.txt1}>
-          Informe seu CPF e Carteirinha do SUS
-        </Text>
-        <Text style={styles.txt1}>
-          para buscarmos seu cadastro:
-        </Text>
+                <Image
+                  source={require("../../../assets/barra-de-bateria.png")}
+                  style={styles.icons}
+                />
+              </View>
+            </View>
 
-        <View style={styles.containerInputs}>
-          <TextInput
-            style={styles.input}
-            placeholder="CPF"
-            value={cpf}
-            onChangeText={(text) => setCpf(text)}
-            keyboardType="numeric"
-          />
+            <View style={styles.main}>
+              <Pressable
+                style={styles.btnVoltar}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  navigation.navigate("BemVindo");
+                }}
+              >
+                <Text style={styles.txtBtnVoltar}>Voltar</Text>
+              </Pressable>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Número da Carteirinha do SUS"
-            value={cns}
-            onChangeText={(text) => setCns(text)}
-            keyboardType="numeric"
-          />
-        </View>
+              <Image
+                source={require("../../../assets/azul-logo.png")}
+                style={styles.logo}
+              />
 
-        <View style={styles.containerBtn}>
-          <Pressable style={styles.btn} onPress={procurarCadastro}>
-            <Text style={styles.txtBtn}>Próximo</Text>
-          </Pressable>
-        </View>
-      </View>
+              <Text style={styles.txt}>Primeira vez por aqui?</Text>
 
-      <ModalPadrao
-        visible={modal}
-        onClose={() => setModal(false)}
-        modalMessage={modalMessage}
-      />
-    </View>
+              <Text style={styles.txt1}>Informe seu CPF e Carteirinha do SUS</Text>
+              <Text style={styles.txt1}>para buscarmos seu cadastro:</Text>
+
+              <View style={styles.containerInputs}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="CPF"
+                  value={cpf}
+                  onChangeText={setCpf}
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                  onSubmitEditing={Keyboard.dismiss}
+                  
+                />
+
+                <TextInput
+                  style={styles.input}
+                  placeholder="Número da Carteirinha do SUS"
+                  value={cns}
+                  onChangeText={setCns}
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                  onSubmitEditing={Keyboard.dismiss}
+                 
+                />
+              </View>
+
+              <View style={styles.containerBtn}>
+                <Pressable
+                  style={styles.btn}
+                  onPress={procurarCadastro}
+                >
+                  <Text style={styles.txtBtn}>Próximo</Text>
+                </Pressable>
+              </View>
+            </View>
+
+            <ModalPadrao
+              visible={modal}
+              onClose={() => setModal(false)}
+              modalMessage={modalMessage}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }

@@ -7,7 +7,7 @@ const BASE_URL =
        process.env.EXPO_PUBLIC_API_URL ??
        "http://localhost:8000/api")
     : (process.env.EXPO_PUBLIC_API_URL ??
-       "http://192.168.31.108:8000/api");
+       "http://172.20.10.2:8000/api");
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -15,6 +15,5 @@ export const api = axios.create({
 });
 
 
-
-//php artisan serve --host 0.0.0.0 --port 8000 (rodar no backend laravel)
+//php artisan serve --host 0.0.0.0 --port 8000 (rodar no backend laravel) 127.0.0.1
 

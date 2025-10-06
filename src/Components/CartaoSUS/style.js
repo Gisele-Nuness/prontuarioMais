@@ -47,4 +47,15 @@ modalOverlay: {
     height: 190,
     borderRadius: 12,
   },
+
+  dadosCarteirinha: {
+    position: "absolute",
+    top: 130,
+    left: 50
+  },
+
+  txtCarteirinha: {
+    color: "#ffffff",
+    fontWeight: "bold"
+  }
 });

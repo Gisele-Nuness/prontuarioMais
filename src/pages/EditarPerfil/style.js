@@ -1,4 +1,3 @@
-// src/pages/EditarPerfil/style.js
 import { StyleSheet } from "react-native";
 
 export default function makeStyles(t) {
@@ -75,8 +74,8 @@ export default function makeStyles(t) {
       alignItems: "center",
       justifyContent: "center",
       position: "absolute",
-      top: 10,
-      left: 10,
+      top: -10,
+      left: -10,
       borderColor: t.colors.border,
     },
 

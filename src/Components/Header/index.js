@@ -1,16 +1,17 @@
 import React, { useState, useCallback } from "react";
 import { View, Image, Pressable, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import makeStyles from "./style";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
 import { buscarConta } from "../../Controllers/usuario";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
   const [imagem, setImagem] = useState(null);
   const [nome, setNome] = useState("");
   const styles = useThemedStyles(makeStyles);
   const route = useRoute();
+  const navigation = useNavigation();
 
   const routePacienteId = route.params?.pacienteId;
 
@@ -48,10 +49,12 @@ export default function Header() {
           source={require("../../../assets/notificacao.png")}
           style={styles.icons}
         />
+        <Pressable onPress={() => navigation.navigate("Ajuda")}>
         <Image
           source={require("../../../assets/ponto-de-interrogacao.png")}
           style={styles.icons}
         />
+        </Pressable>
       </View>
     </View>
   );

@@ -18,7 +18,7 @@ export default function Home() {
   const bannerImages = [
     require("../../../assets/banner1.png"),
     require("../../../assets/campanha-dengue.jpg"),
-    require("../../../assets/campanha-setembro-amarelo.png"),
+    require("../../../assets/outubro-rosa.png"),
   ];
   const [bannerIndex, setBannerIndex] = useState(0);
 
@@ -127,7 +127,7 @@ export default function Home() {
         visivel={modalSUSVisivel}
         aoFechar={() => setModalSUSVisivel(false)}
         frenteSrc={require("../../../assets/cartao-frente.png")}
-        versoSrc={require("../../../assets/cartao-verso.jpg")}
+        versoSrc={require("../../../assets/cartao-verso.png")}
       />
     </View>
   );

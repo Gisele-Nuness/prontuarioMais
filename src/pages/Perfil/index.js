@@ -125,7 +125,7 @@ export default function Perfil() {
         visivel={modalSUSVisivel}
         aoFechar={() => setModalSUSVisivel(false)}
         frenteSrc={require("../../../assets/cartao-frente.png")}
-        versoSrc={require("../../../assets/cartao-verso.jpg")}
+        versoSrc={require("../../../assets/cartao-verso.png")}
       />
     </View>
   );

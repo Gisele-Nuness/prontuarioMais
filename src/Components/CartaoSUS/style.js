@@ -44,18 +44,20 @@ modalOverlay: {
 
   susImage: {
     width: "100%",
-    height: 190,
+    height: 240,
     borderRadius: 12,
   },
 
   dadosCarteirinha: {
     position: "absolute",
-    top: 130,
-    left: 50
+    top: 135,
+    left: 70,
+    gap: 6,
   },
 
   txtCarteirinha: {
-    color: "#ffffff",
-    fontWeight: "bold"
+    color: "#000000",
+    fontWeight: "bold",
+    fontSize: 12,
   }
 });

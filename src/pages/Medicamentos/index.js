@@ -21,7 +21,6 @@ import { Platform } from "react-native";
 let DateTimePicker = null;
 if (Platform.OS !== "web") {
   DateTimePicker = require("@react-native-community/datetimepicker").default;
-
 }
 import { useNotifications } from "../../Context/NotificationContext";
 
@@ -90,45 +89,43 @@ export default function Medicamentos() {
     setHorarios([...horarios, novoHorario]);
   };
 
-const salvarLembrete = async () => {
-  if (!remedioSelecionado || horarios.length === 0) return;
+  const salvarLembrete = async () => {
+    if (!remedioSelecionado || horarios.length === 0) return;
 
-  const totalDias = parseInt(dias);
+    const totalDias = parseInt(dias);
 
-  for (let i = 0; i < totalDias; i++) {
-    horarios.forEach(async (hora) => {
-      const horarioNotificacao = new Date();
-      horarioNotificacao.setDate(horarioNotificacao.getDate() + i);
-      horarioNotificacao.setHours(hora.getHours());
-      horarioNotificacao.setMinutes(hora.getMinutes());
-      horarioNotificacao.setSeconds(0);
+    for (let i = 0; i < totalDias; i++) {
+      horarios.forEach(async (hora) => {
+        const horarioNotificacao = new Date();
+        horarioNotificacao.setDate(horarioNotificacao.getDate() + i);
+        horarioNotificacao.setHours(hora.getHours());
+        horarioNotificacao.setMinutes(hora.getMinutes());
+        horarioNotificacao.setSeconds(0);
 
-      const horaFormatada = hora.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
+        const horaFormatada = hora.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        adicionarNotificacao({
+          nome: remedioSelecionado.nome,
+          horario: horaFormatada,
+        });
+
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "💊 Hora do remédio!",
+            body: `${remedioSelecionado.nome} às ${horaFormatada}`,
+          },
+          trigger: horarioNotificacao,
+        });
       });
+    }
 
-      // adiciona no contexto global
-      adicionarNotificacao({
-        nome: remedioSelecionado.nome,
-        horario: horaFormatada,
-      });
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "💊 Hora do remédio!",
-          body: `${remedioSelecionado.nome} às ${horaFormatada}`,
-        },
-        trigger: horarioNotificacao,
-      });
-    });
-  }
-
-  setModalLembrete(false);
-  setModal(true);
-  setModalMessage("Lembretes configurados com sucesso!");
-};
-
+    setModalLembrete(false);
+    setModal(true);
+    setModalMessage("Lembretes configurados com sucesso!");
+  };
 
   const CardRemedio = ({ remedio }) => {
     return (
@@ -180,31 +177,15 @@ const salvarLembrete = async () => {
       />
 
       <Modal visible={modalLembrete} transparent animationType="slide">
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#000000aa",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#fff",
-              padding: 20,
-              borderRadius: 15,
-              width: "85%",
-            }}
-          >
-            <Text
-              style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}
-            >
+        <View style={styles.containerModal}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>
               Lembrete para {remedioSelecionado?.nome}
             </Text>
 
             <ScrollView>
               {horarios.map((h, idx) => (
-                <Text key={idx}>
+                <Text style={styles.modalHoras} key={idx}>
                   ⏰{" "}
                   {h.toLocaleTimeString([], {
                     hour: "2-digit",
@@ -215,6 +196,7 @@ const salvarLembrete = async () => {
 
               {Platform.OS !== "web" && (
                 <DateTimePicker
+                  style={styles.modalHoras}
                   value={novoHorario}
                   mode="time"
                   onChange={(e, date) => setNovoHorario(date)}
@@ -258,7 +240,7 @@ const salvarLembrete = async () => {
         visivel={modalSUSVisivel}
         aoFechar={() => setModalSUSVisivel(false)}
         frenteSrc={require("../../../assets/cartao-frente.png")}
-        versoSrc={require("../../../assets/cartao-verso.jpg")}
+        versoSrc={require("../../../assets/cartao-verso.png")}
       />
     </View>
   );

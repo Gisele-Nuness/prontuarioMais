@@ -43,7 +43,6 @@ export default function makeStyles(t) {
       tintColor: t.colors.primary,
     },
 
-
     historico: {
       width: "100%",
       flexDirection: "row",
@@ -64,10 +63,10 @@ export default function makeStyles(t) {
     },
 
     containerRemedios: {
-        flexDirection: "row",
-        alignItems: "center",
-        flex: 1,
-        justifyContent: "space-between",
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+      justifyContent: "space-between",
     },
 
     textos: {
@@ -103,6 +102,25 @@ export default function makeStyles(t) {
       tintColor: t.colors.primary,
     },
 
+    containerModal: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#000000aa",
+    },
 
+    modalCard: {
+      width: "85%",
+      maxWidth: 380,
+      backgroundColor: isDark ? "#333" : "#fff",
+      padding: 20,
+      borderRadius: 15,
+    },
+
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      marginBottom: 10,
+    },
   });
 }

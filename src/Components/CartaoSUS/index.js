@@ -30,7 +30,7 @@ export default function CartaoSUS({ visivel, aoFechar, frenteSrc, versoSrc }) {
   );
 
   const frente = frenteSrc ?? require("../../../assets/cartao-frente.png");
-  const verso = versoSrc ?? require("../../../assets/cartao-verso.jpg");
+  const verso = versoSrc ?? require("../../../assets/cartao-verso.png");
 
   const fechar = () => {
     setMostrarVerso(false);
@@ -62,14 +62,14 @@ export default function CartaoSUS({ visivel, aoFechar, frenteSrc, versoSrc }) {
           <View style={styles.modalImageWrap}>
             <Image
               source={mostrarVerso ? verso : frente}
-              resizeMode="contain"
+              resizeMode="cover"
               style={styles.susImage}
             />
           </View>
           {mostrarVerso ? 
           <View style={styles.dadosCarteirinha}>
             <Text style={styles.txtCarteirinha}>Nome: {nome}</Text>
-            <Text style={styles.txtCarteirinha}>Nº carteirinha: {cns}</Text>
+            <Text style={styles.txtCarteirinha}>Nº Carteirinha: {cns}</Text>
           </View>
           :
            <View></View>}

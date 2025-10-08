@@ -15,12 +15,14 @@ import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import CartaoSUS from "../../Components/CartaoSUS";
 import { useTheme } from "../../Theme/ThemeProvider";
+import { useNotifications } from "../../Context/NotificationContext";
 
 export default function Perfil() {
   const navigation = useNavigation();
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
   const { theme, mode, toggleMode } = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { notificacoes } = useNotifications();
 
   const itensPerfil = [
     {
@@ -66,7 +68,7 @@ export default function Perfil() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header notificacoes={notificacoes}/>
 
       <View style={styles.main}>
         <View style={[styles.historico, { marginBottom: 10 }]}>

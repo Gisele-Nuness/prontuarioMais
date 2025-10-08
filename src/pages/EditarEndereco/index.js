@@ -23,11 +23,13 @@ import { buscarConta } from "../../Controllers/usuario";
 import { Picker } from "@react-native-picker/picker";
 import Data from "../../Controllers/data";
 import Header from "../../Components/Header";
+import { useNotifications } from "../../Context/NotificationContext";
 
 export default function EditarPerfil() {
   const navigation = useNavigation();
   const route = useRoute();
   const styles = useThemedStyles(makeStyles);
+  const { notificacoes } = useNotifications();
 
   const routePacienteId = route.params?.pacienteId;
 
@@ -142,7 +144,7 @@ export default function EditarPerfil() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header notificacoes={notificacoes} />
 
       <View style={styles.main}>
         <Pressable

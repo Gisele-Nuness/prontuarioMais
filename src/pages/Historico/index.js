@@ -13,8 +13,10 @@ import { useNavigation, useTheme } from "@react-navigation/native";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import CartaoSUS from "../../Components/CartaoSUS";
+import { useNotifications } from "../../Context/NotificationContext";
 
 export default function Historico() {
+  const { notificacoes } = useNotifications();
   const [textoPesquisa, setTextoPesquisa] = useState("");
   const navigation = useNavigation();
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
@@ -105,7 +107,7 @@ export default function Historico() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header notificacoes={notificacoes} />
 
       <View style={styles.main}>
         <View style={styles.searchWrapper}>

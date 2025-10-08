@@ -8,6 +8,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { ThemeProvider, useTheme } from "./src/Theme/ThemeProvider";
+import { NotificationProvider } from "./src/Context/NotificationContext"; // ✅ novo import
 
 import Splash from "./src/pages/Splash";
 import BemVindo from "./src/pages/BemVindo";
@@ -22,7 +23,8 @@ import Perfil from "./src/pages/Perfil";
 import EditarPerfil from "./src/pages/EditarPerfil";
 import EditarEndereco from "./src/pages/EditarEndereco";
 import Alergias from "./src/pages/Alergias";
-import Ajuda from "./src/pages/Ajuda"
+import Ajuda from "./src/pages/Ajuda";
+import Medicamentos from "./src/pages/Medicamentos";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +37,7 @@ function AppInner() {
       <StatusBar hidden />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
-          initialRouteName="Ajuda"
+          initialRouteName="Medicamentos"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />
@@ -52,7 +54,7 @@ function AppInner() {
           <Stack.Screen name="EditarEndereco" component={EditarEndereco} />
           <Stack.Screen name="Alergias" component={Alergias} />
           <Stack.Screen name="Ajuda" component={Ajuda} />
-
+          <Stack.Screen name="Medicamentos" component={Medicamentos} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
@@ -62,7 +64,9 @@ function AppInner() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppInner />
+      <NotificationProvider>
+        <AppInner />
+      </NotificationProvider>
     </ThemeProvider>
   );
 }

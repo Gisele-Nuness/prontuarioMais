@@ -5,11 +5,13 @@ import { View, Text, Pressable, Image, FlatList, Animated } from "react-native";
 import makeStyles from "./style";
 import React, { useState } from "react";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
+import { useNotifications } from "../../Context/NotificationContext";
 
 export default function Ajuda() {
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
-  const [expandedId, setExpandedId] = useState(null); // controla qual card está aberto
+  const [expandedId, setExpandedId] = useState(null);
   const styles = useThemedStyles(makeStyles);
+  const { notificacoes } = useNotifications();
 
   const perguntas = [
     {
@@ -64,7 +66,7 @@ export default function Ajuda() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header notificacoes={notificacoes}/>
       <View style={styles.main}>
         <View style={styles.containerTitulo}>
           <Text style={styles.titulo}>Central de Ajuda</Text>

@@ -6,10 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 import CartaoSUS from "../../Components/CartaoSUS";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
+import { useNotifications } from "../../Context/NotificationContext";
 
 export default function Home() {
   const navigation = useNavigation();
   const styles = useThemedStyles(makeStyles);
+  const { notificacoes } = useNotifications();
 
   const [modalSUSVisivel, setModalSUSVisivel] = useState(false);
 
@@ -29,7 +31,7 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header notificacoes={notificacoes} />
 
       <View style={styles.main}>
         <View style={styles.bannerPaciente}>

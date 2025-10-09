@@ -48,6 +48,7 @@ export default function makeStyles(t) {
       borderColor: isDark ? t.colors.primary : t.colors.border,
       alignItems: "center",
       justifyContent: "center",
+      marginTop: 40
     },
 
     imgLapis: {

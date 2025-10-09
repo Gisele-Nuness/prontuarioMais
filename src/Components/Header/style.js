@@ -55,7 +55,7 @@ export default function makeStyles(t) {
       tintColor: isDark ? t.colors.text : t.colors.background,
     },
 
-        badge: {
+    badge: {
       position: "absolute",
       top: -5,
       right: -8,
@@ -93,6 +93,16 @@ export default function makeStyles(t) {
       borderBottomWidth: 1,
       borderColor: "#eee",
       paddingVertical: 8,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+      marginBottom: 8,
+    },
+
+    comprimidoIcon: {
+      width: 24,
+      height: 24,
+      marginBottom: 4,
     },
     btnFechar: {
       marginTop: 15,
@@ -104,6 +114,36 @@ export default function makeStyles(t) {
       color: "#fff",
       textAlign: "center",
       fontWeight: "bold",
+    },
+
+    modal: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.84)",
+    },
+
+    modalContainer: {
+      backgroundColor: "white",
+      padding: 20,
+      borderRadius: 10,
+      width: "80%",
+      height: 200,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    modalText: {
+      fontSize: 18,
+      marginBottom: 20,
+      textAlign: "center",
+    },
+
+    btnExcluir: {
+      marginTop: 15,
+      backgroundColor: "#E02416",
+      padding: 10,
+      borderRadius: 8,
     },
   });
 }

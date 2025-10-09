@@ -111,10 +111,11 @@ export default function makeStyles(t) {
 
     modalCard: {
       width: "85%",
-      maxWidth: 380,
-      backgroundColor: isDark ? "#333" : "#fff",
+      backgroundColor: "#fff",
       padding: 20,
       borderRadius: 15,
+      alignItems: "center",
+      justifyContent: "center",
     },
 
     modalTitle: {
@@ -122,5 +123,77 @@ export default function makeStyles(t) {
       fontWeight: "bold",
       marginBottom: 10,
     },
+    containerHoras: {
+      width: "100%",
+      marginVertical: 10,
+      padding: 10,
+      alignItems: "center",
+    },
+
+    modalHoras: {
+      fontSize: 16,
+      marginVertical: 4,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    modalHoraPicker: {
+      marginTop: 10,
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    txtModal: {
+      fontSize: 16,
+      marginBottom: 6
+    },
+
+    botaoAdicionar: {
+      backgroundColor: "#15A117",
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 8,
+      marginTop: 10,
+      marginBottom: 10,
+    },
+
+    txtbotao: {
+      color: "#fff",
+      fontWeight: "bold",
+      fontSize: 16,
+    },
+
+    inputDias: {
+      width: 100,
+      borderWidth: 1,
+      borderColor: "#ccc",
+      borderRadius: 8,
+      padding: 8,
+      marginVertical: 5,
+      textAlign: "center",
+    },
+
+    botaoSalvar: {
+      backgroundColor: "#1600a4ff",
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 8,
+      marginTop: 10,
+      marginBottom: 10,
+      width: 200,
+      alignItems: "center",
+    },
+
+  botaoCancelar: {
+    backgroundColor: "#E02416",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    marginBottom: 10,
+    width: 200,
+    alignItems: "center",
+  },
   });
 }

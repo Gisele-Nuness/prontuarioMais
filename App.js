@@ -37,7 +37,7 @@ function AppInner() {
       <StatusBar hidden />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
-          initialRouteName="Splash"
+          initialRouteName="Medicamentos"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />

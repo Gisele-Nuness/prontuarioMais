@@ -1,18 +1,31 @@
 import React, { useState, useCallback } from "react";
-import { View, Image, Pressable, Text, Modal, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  Pressable,
+  Text,
+  Modal,
+  ScrollView,
+  Button,
+} from "react-native";
 import makeStyles from "./style";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { useThemedStyles } from "../../Theme/useThemedStyles";
 import { buscarConta } from "../../Controllers/usuario";
 import { useNavigation } from "@react-navigation/native";
+import { useNotifications } from "../../Context/NotificationContext";
 
-export default function Header({ notificacoes = [] }) {
+export default function Header() {
   const [imagem, setImagem] = useState(null);
   const [nome, setNome] = useState("");
   const styles = useThemedStyles(makeStyles);
   const route = useRoute();
   const navigation = useNavigation();
   const [modalNotificacoes, setModalNotificacoes] = useState(false);
+  const [modalConfirmacao, setModalConfirmacao] = useState(false);
+  const [notificacaoSelecionada, setNotificacaoSelecionada] = useState(null);
+
+  const { notificacoes, removerNotificacao } = useNotifications();
 
   const routePacienteId = route.params?.pacienteId;
 
@@ -74,27 +87,84 @@ export default function Header({ notificacoes = [] }) {
         <View style={styles.modalFundo}>
           <View style={styles.modalConteudo}>
             <Text style={styles.modalTitulo}>Lembretes de Medicamentos</Text>
-
             <ScrollView style={{ maxHeight: 300 }}>
               {notificacoes.length === 0 ? (
                 <Text style={{ textAlign: "center", color: "#555" }}>
                   Nenhum lembrete agendado
                 </Text>
               ) : (
-                notificacoes.map((n, i) => (
-                  <View key={i} style={styles.notificacaoItem}>
-                    <Text style={{ fontWeight: "bold" }}>{n.nome}</Text>
-                    <Text>{n.horario}</Text>
+                notificacoes.map((n) => (
+                  <View key={n.id} style={styles.notificacaoItem}>
+                    <View>
+                      <Image
+                        source={require("../../../assets/comprimido.png")}
+                        style={styles.comprimidoIcon}
+                      />
+                    </View>
+                    <View>
+                      <Text style={{ fontWeight: "bold" }}>{n.nome}</Text>
+                      <Text>{n.horario}</Text>
+                    </View>
+                    <View style={{ marginLeft: "auto" }}>
+                      <Pressable
+                        onPress={() => {
+                          setModalNotificacoes(false);
+                          setNotificacaoSelecionada(n.id);
+                          setModalConfirmacao(true);
+                        }}
+                      >
+                        <Image
+                          source={require("../../../assets/lixeira.png")}
+                          style={styles.comprimidoIcon}
+                        />
+                      </Pressable>
+                    </View>
                   </View>
                 ))
               )}
             </ScrollView>
-
             <Pressable
               style={styles.btnFechar}
               onPress={() => setModalNotificacoes(false)}
             >
               <Text style={styles.btnFecharTexto}>Fechar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={modalConfirmacao}
+        animationType="fade"
+        transparent
+        onRequestClose={() => {
+          setModalConfirmacao(false);
+          setNotificacaoSelecionada(null);
+        }}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalText}>Deseja excluir esse lembrete?</Text>
+            <Pressable
+              style={styles.btnExcluir}
+              onPress={() => {
+                removerNotificacao(notificacaoSelecionada);
+                setModalConfirmacao(false);
+                setModalNotificacoes(true);
+                setNotificacaoSelecionada(null);
+              }}
+            >
+              <Text style={styles.btnFecharTexto}>Excluir</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.btnFechar}
+              onPress={() => {
+                setModalConfirmacao(false);
+                setNotificacaoSelecionada(null);
+              }}
+            >
+              <Text style={styles.btnFecharTexto}>Cancelar</Text>
             </Pressable>
           </View>
         </View>

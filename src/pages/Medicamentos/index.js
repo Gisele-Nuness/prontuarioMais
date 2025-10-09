@@ -183,7 +183,7 @@ export default function Medicamentos() {
               Lembrete para {remedioSelecionado?.nome}
             </Text>
 
-            <ScrollView>
+            <ScrollView contentContainerStyle={styles.containerHoras}>
               {horarios.map((h, idx) => (
                 <Text style={styles.modalHoras} key={idx}>
                   ⏰{" "}
@@ -194,37 +194,41 @@ export default function Medicamentos() {
                 </Text>
               ))}
 
-              {Platform.OS !== "web" && (
-                <DateTimePicker
-                  style={styles.modalHoras}
-                  value={novoHorario}
-                  mode="time"
-                  onChange={(e, date) => setNovoHorario(date)}
-                />
-              )}
+              <View style={styles.modalHoraPicker}>
+                <Text style={styles.txtModal}>Selecione o horário</Text>
 
-              <Button title="Adicionar horário" onPress={adicionarHorario} />
+                {Platform.OS !== "web" && (
+                  <DateTimePicker
+                    style={styles.modalHoras}
+                    value={novoHorario}
+                    mode="time"
+                    onChange={(e, date) => setNovoHorario(date)}
+                  />
+                )}
+              </View>
 
-              <Text style={{ marginTop: 10 }}>Por quantos dias?</Text>
+              <Pressable
+                style={styles.botaoAdicionar}
+                onPress={adicionarHorario}
+              >
+                <Text style={styles.txtbotao}>+ Adicionar Horário</Text>
+              </Pressable>
+
+              <Text style={styles.txtModal}>Por quantos dias?</Text>
               <TextInput
                 value={dias}
                 onChangeText={setDias}
                 keyboardType="numeric"
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#ccc",
-                  borderRadius: 8,
-                  padding: 8,
-                  marginVertical: 5,
-                }}
+                style={styles.inputDias}
               />
 
-              <Button title="Salvar lembrete" onPress={salvarLembrete} />
-              <Button
-                title="Cancelar"
-                color="red"
-                onPress={() => setModalLembrete(false)}
-              />
+              <Pressable style={styles.botaoSalvar} onPress={salvarLembrete}>
+                <Text style={styles.txtbotao}>Salvar</Text>
+              </Pressable>
+
+              <Pressable style={styles.botaoCancelar} onPress={() => setModalLembrete(false)}>
+                <Text style={styles.txtbotao}>Cancelar</Text>
+              </Pressable>
             </ScrollView>
           </View>
         </View>
